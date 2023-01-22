@@ -97,13 +97,6 @@ export const NB_CORE_PROVIDERS = [
           method: 'POST',
           endpoint: 'auth/login',
         },
-        register: false,
-        validation: {
-          email: {
-            required: false,
-            regexp: '.+',
-          },
-        },
         token: {
           key: 'access_token',
         },
