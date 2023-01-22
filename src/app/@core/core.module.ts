@@ -104,6 +104,9 @@ export const NB_CORE_PROVIDERS = [
             regexp: '.+',
           },
         },
+        token: {
+          key: 'access_token',
+        },
       }),
     ],
     forms: {
