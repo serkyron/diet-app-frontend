@@ -10,6 +10,8 @@ import {
   NbInputModule
 } from '@nebular/theme';
 import { LoginComponent } from "./components/login/login.component";
+import { AuthGuard } from "./services/auth-guard.service";
+import { SecondAuthGuard } from "./services/second-auth-guard.service";
 
 @NgModule({
   imports: [
@@ -25,6 +27,10 @@ import { LoginComponent } from "./components/login/login.component";
   ],
   declarations: [
     LoginComponent,
+  ],
+  providers: [
+    AuthGuard,
+    SecondAuthGuard,
   ],
 })
 export class AuthModule {
