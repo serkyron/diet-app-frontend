@@ -72,6 +72,10 @@ export class SmartTableComponent {
   source: LocalDataSource = new LocalDataSource();
 
   constructor(private ingredientsService: IngredientsService) {
+    this.loadData();
+  }
+
+  private loadData(): void {
     this.ingredientsService.get()
       .subscribe((data) => {
         this.source.load(data)
@@ -96,7 +100,10 @@ export class SmartTableComponent {
   onCreateConfirm(event): void {
     this.ingredientsService.create(event.newData)
       .subscribe(
-        () => {event.confirm.resolve()},
+        () => {
+          event.confirm.resolve();
+          this.loadData();
+        },
         (e) => {event.confirm.reject()}
       );
   }
