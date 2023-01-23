@@ -21,7 +21,7 @@ import {
   NbWindowModule,
 } from '@nebular/theme';
 import { AuthModule } from "./auth/auth.module";
-import { NbAuthJWTInterceptor } from "@nebular/auth";
+import { NB_AUTH_TOKEN_INTERCEPTOR_FILTER, NbAuthJWTInterceptor } from "@nebular/auth";
 import { PagesModule } from "./pages/pages.module";
 
 @NgModule({
@@ -42,9 +42,13 @@ import { PagesModule } from "./pages/pages.module";
     CoreModule.forRoot(),
     ThemeModule.forRoot(),
     AuthModule,
-    PagesModule,
+    HttpClientModule,
   ],
   bootstrap: [AppComponent],
+  providers: [
+    { provide: NB_AUTH_TOKEN_INTERCEPTOR_FILTER, useValue: function () { return false; }, },
+    { provide: HTTP_INTERCEPTORS, useClass: NbAuthJWTInterceptor, multi: true },
+  ],
 })
 export class AppModule {
 }
