@@ -13,6 +13,11 @@ const routes: Routes = [{
       component: DashboardComponent,
     },
     {
+      path: 'ingredients',
+      loadChildren: () => import('./ingredients/tables.module')
+        .then(m => m.TablesModule),
+    },
+    {
       path: 'layout',
       loadChildren: () => import('./layout/layout.module')
         .then(m => m.LayoutModule),
