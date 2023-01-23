@@ -6,7 +6,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { CoreModule } from './@core/core.module';
 import { ThemeModule } from './@theme/theme.module';
 import { AppComponent } from './app.component';
@@ -21,13 +21,14 @@ import {
   NbWindowModule,
 } from '@nebular/theme';
 import { AuthModule } from "./auth/auth.module";
+import { NbAuthJWTInterceptor } from "@nebular/auth";
+import { PagesModule } from "./pages/pages.module";
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    HttpClientModule,
     AppRoutingModule,
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
@@ -41,6 +42,7 @@ import { AuthModule } from "./auth/auth.module";
     CoreModule.forRoot(),
     ThemeModule.forRoot(),
     AuthModule,
+    PagesModule,
   ],
   bootstrap: [AppComponent],
 })

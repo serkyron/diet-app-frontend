@@ -2,33 +2,20 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { HOST } from "../../@core/config/host";
 import { Observable, of } from "rxjs";
-import { NbAuthService, NbAuthSimpleToken } from "@nebular/auth";
-import { switchMap, tap } from "rxjs/operators";
+import { switchMap } from "rxjs/operators";
 
 @Injectable()
 export class IngredientsService {
   constructor(
     private http: HttpClient,
-    private authService: NbAuthService,
   ) {
   }
 
   public get(): Observable<any> {
-    return this.authService.getToken()
+    return this.http.get(`${HOST.baseUrl}/ingredient`)
       .pipe(
-        switchMap((tokenObject) => {
-          let tokenStr = tokenObject.getValue();
-
-          return this.http.get(`${HOST.baseUrl}/ingredient`, {
-            headers: {
-              Authorization: `Bearer ${tokenStr}`,
-            },
-          })
-            .pipe(
-              switchMap((response: any) => {
-                return of(response.data);
-              })
-            )
+        switchMap((response: any) => {
+          return of(response.data);
         })
       );
   }

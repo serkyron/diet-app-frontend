@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NbAuthModule } from '@nebular/auth';
+import { NbAuthJWTInterceptor, NbAuthModule } from '@nebular/auth';
 import {
   NbAlertModule,
   NbButtonModule,
@@ -31,6 +31,7 @@ import { SecondAuthGuard } from "./services/second-auth-guard.service";
   providers: [
     AuthGuard,
     SecondAuthGuard,
+    NbAuthJWTInterceptor
   ],
 })
 export class AuthModule {
