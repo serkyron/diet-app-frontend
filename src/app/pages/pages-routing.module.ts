@@ -17,6 +17,11 @@ const routes: Routes = [{
       loadChildren: () => import('./ingredients/tables.module')
         .then(m => m.TablesModule),
     },
+    {
+      path: 'recommendations',
+      loadChildren: () => import('./recommendations/tables.module')
+        .then(m => m.TablesModule),
+    },
 
     {
       path: 'layout',

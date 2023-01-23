@@ -8,15 +8,22 @@ export const MENU_ITEMS: NbMenuItem[] = [
     home: true,
   },
   {
-    title: 'FEATURES',
+    title: 'ENTITIES',
     group: true,
   },
   {
     title: 'Ingredients',
+    icon: 'pie-chart-outline',
     link: '/pages/ingredients',
   },
   {
+    title: 'Recommendations',
+    icon: 'edit-2-outline',
+    link: '/pages/recommendations',
+  },
+  {
     title: 'Meals',
+    icon: 'grid-outline',
     link: '/pages/meals',
   },
   {

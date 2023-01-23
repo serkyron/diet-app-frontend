@@ -8,6 +8,7 @@ import { PagesRoutingModule } from './pages-routing.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { IngredientsService } from "./ingredients/ingredients.service";
 import { NbAuthModule } from "@nebular/auth";
+import { RecommendationsService } from "./recommendations/recommendations.service";
 
 @NgModule({
   imports: [
@@ -24,6 +25,7 @@ import { NbAuthModule } from "@nebular/auth";
   ],
   providers: [
     IngredientsService,
+    RecommendationsService,
   ],
 })
 export class PagesModule {
