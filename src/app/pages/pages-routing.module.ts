@@ -17,6 +17,7 @@ const routes: Routes = [{
       loadChildren: () => import('./ingredients/tables.module')
         .then(m => m.TablesModule),
     },
+
     {
       path: 'layout',
       loadChildren: () => import('./layout/layout.module')
