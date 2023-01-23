@@ -20,7 +20,7 @@ export class SmartTableComponent {
       editButtonContent: '<i class="nb-edit"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
-      saveConfirm: true,
+      confirmSave: true,
     },
     delete: {
       deleteButtonContent: '<i class="nb-trash"></i>',
@@ -55,6 +55,16 @@ export class SmartTableComponent {
       category: {
         title: 'Category',
         type: 'string',
+        editor: {
+          type: 'list',
+          config: {
+            list: [
+              { value: 'proteins', title: 'Proteins' },
+              { value: 'carbohydrates', title: 'Carbohydrates' },
+              { value: 'fats', title: 'Fats' },
+            ],
+          },
+        },
       },
     },
   };
@@ -73,19 +83,29 @@ export class SmartTableComponent {
 
   onDeleteConfirm(event): void {
     if (window.confirm('Are you sure you want to delete?')) {
-      event.confirm.resolve();
+      this.ingredientsService.delete(event.data.id)
+        .subscribe(
+          () => {event.confirm.resolve()},
+          (e) => {event.confirm.reject()}
+        );
     } else {
       event.confirm.reject();
     }
   }
 
   onCreateConfirm(event): void {
-    console.log(event.newData);
-    event.confirm.resolve();
+    this.ingredientsService.create(event.newData)
+      .subscribe(
+        () => {event.confirm.resolve()},
+        (e) => {event.confirm.reject()}
+      );
   }
 
   onEditConfirm(event): void {
-    console.log(event.newData);
-    event.confirm.resolve();
+    this.ingredientsService.update(event.newData.id, event.newData)
+      .subscribe(
+        () => {event.confirm.resolve()},
+        (e) => {event.confirm.reject()}
+      );
   }
 }
