@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
-
-import { SmartTableData } from '../../../@core/data/smart-table';
+import { IngredientsService } from "../ingredients.service";
 
 @Component({
   selector: 'ngx-smart-table',
@@ -15,11 +14,13 @@ export class SmartTableComponent {
       addButtonContent: '<i class="nb-plus"></i>',
       createButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
+      confirmCreate: true,
     },
     edit: {
       editButtonContent: '<i class="nb-edit"></i>',
       saveButtonContent: '<i class="nb-checkmark"></i>',
       cancelButtonContent: '<i class="nb-close"></i>',
+      saveConfirm: true,
     },
     delete: {
       deleteButtonContent: '<i class="nb-trash"></i>',
@@ -29,35 +30,45 @@ export class SmartTableComponent {
       id: {
         title: 'ID',
         type: 'number',
+        hide: true,
       },
-      firstName: {
-        title: 'First Name',
+      name: {
+        title: 'Name',
         type: 'string',
       },
-      lastName: {
-        title: 'Last Name',
-        type: 'string',
-      },
-      username: {
-        title: 'Username',
-        type: 'string',
-      },
-      email: {
-        title: 'E-mail',
-        type: 'string',
-      },
-      age: {
-        title: 'Age',
+      calories: {
+        title: 'Calories',
         type: 'number',
+      },
+      proteins: {
+        title: 'Proteins',
+        type: 'number',
+      },
+      carbohydrates: {
+        title: 'Carbohydrates',
+        type: 'number',
+      },
+      fats: {
+        title: 'Fats',
+        type: 'number',
+      },
+      category: {
+        title: 'Category',
+        type: 'string',
       },
     },
   };
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private service: SmartTableData) {
-    const data = this.service.getData();
-    this.source.load(data);
+  constructor(private ingredientsService: IngredientsService) {
+    this.ingredientsService.get()
+      .subscribe((data) => {
+        this.source.load(data)
+          .catch((e) => {
+            console.log(e.message());
+          });
+      });
   }
 
   onDeleteConfirm(event): void {
@@ -66,5 +77,15 @@ export class SmartTableComponent {
     } else {
       event.confirm.reject();
     }
+  }
+
+  onCreateConfirm(event): void {
+    console.log(event.newData);
+    event.confirm.resolve();
+  }
+
+  onEditConfirm(event): void {
+    console.log(event.newData);
+    event.confirm.resolve();
   }
 }

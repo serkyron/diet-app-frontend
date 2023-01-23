@@ -7,6 +7,9 @@ import { DashboardModule } from './dashboard/dashboard.module';
 import { ECommerceModule } from './e-commerce/e-commerce.module';
 import { PagesRoutingModule } from './pages-routing.module';
 import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
+import { HttpClientModule } from "@angular/common/http";
+import { IngredientsService } from "./ingredients/ingredients.service";
+import { NbAuthModule } from "@nebular/auth";
 
 @NgModule({
   imports: [
@@ -16,9 +19,14 @@ import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
     DashboardModule,
     ECommerceModule,
     MiscellaneousModule,
+    HttpClientModule,
+    NbAuthModule,
   ],
   declarations: [
     PagesComponent,
+  ],
+  providers: [
+    IngredientsService,
   ],
 })
 export class PagesModule {

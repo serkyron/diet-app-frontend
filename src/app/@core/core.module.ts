@@ -95,7 +95,7 @@ export const NB_CORE_PROVIDERS = [
         login: {
           alwaysFail: false,
           method: 'POST',
-          endpoint: 'auth/login',
+          endpoint: '/auth/login',
         },
         token: {
           key: 'access_token',
