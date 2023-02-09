@@ -17,7 +17,7 @@ export const routes: Routes = [
   {
     path: 'auth',
     component: NbAuthComponent,
-    canActivate: [SecondAuthGuard],
+    // canActivate: [SecondAuthGuard],
     children: [
       {
         path: '',

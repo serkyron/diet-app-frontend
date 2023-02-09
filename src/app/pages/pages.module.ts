@@ -9,6 +9,7 @@ import { MiscellaneousModule } from './miscellaneous/miscellaneous.module';
 import { IngredientsService } from "./ingredients/ingredients.service";
 import { NbAuthModule } from "@nebular/auth";
 import { RecommendationsService } from "./recommendations/recommendations.service";
+import { MealsService } from "./meals/meals.service";
 
 @NgModule({
   imports: [
@@ -26,6 +27,7 @@ import { RecommendationsService } from "./recommendations/recommendations.servic
   providers: [
     IngredientsService,
     RecommendationsService,
+    MealsService,
   ],
 })
 export class PagesModule {

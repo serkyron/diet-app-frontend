@@ -18,6 +18,11 @@ const routes: Routes = [{
         .then(m => m.TablesModule),
     },
     {
+      path: 'meals',
+      loadChildren: () => import('./meals/tables.module')
+        .then(m => m.TablesModule),
+    },
+    {
       path: 'recommendations',
       loadChildren: () => import('./recommendations/tables.module')
         .then(m => m.TablesModule),

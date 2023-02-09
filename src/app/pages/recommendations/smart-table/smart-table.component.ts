@@ -89,7 +89,10 @@ export class SmartTableComponent {
           event.confirm.resolve();
           this.loadData();
         },
-        (e) => {event.confirm.reject()}
+        (e) => {
+          event.confirm.reject();
+          alert(e.error.message.join(', '));
+        }
       );
   }
 
@@ -97,7 +100,10 @@ export class SmartTableComponent {
     this.ingredientsService.update(event.newData.id, event.newData)
       .subscribe(
         () => {event.confirm.resolve()},
-        (e) => {event.confirm.reject()}
+        (e) => {
+          event.confirm.reject();
+          alert(e.error.message.join(', '));
+        }
       );
   }
 }
