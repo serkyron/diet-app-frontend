@@ -25,22 +25,26 @@
       <tr *ngFor="let meal of meals">
         <td>{{meal.name }}</td>
         <td>
-          <span>{{meal.calories | number: '1.0-2'}}</span>
+          <span>{{meal.calories | number: '1.0-0'}}</span>
         </td>
         <td>
-          <span>{{meal.fats | number: '1.0-2'}}</span>
+          <span>{{meal.fats | number: '1.0-0'}}</span>
         </td>
         <td>
-          <span>{{meal.proteins | number: '1.0-2'}}</span>
+          <span>{{meal.proteins | number: '1.0-0'}}</span>
         </td>
         <td>
-          <span>{{meal.carbohydrates | number: '1.0-2'}}</span>
+          <span>{{meal.carbohydrates | number: '1.0-0'}}</span>
         </td>
         <td class="w-25">
-          <span *ngFor="let item of meal.mealToIngredients" class="ingredient-label">{{item.ingredient.name}} - {{item.amount}}g</span>
+          <span *ngFor="let item of meal?.mealToIngredients" class="ingredient-label">{{item.ingredient.name}} - {{item.amount}}g</span>
         </td>
         <td>
-          <button class="btn-light">Delete</button>
+          <button
+            (click)="deleteMeal(meal.id)"
+            class="btn-light">
+            Delete
+          </button>
         </td>
       </tr>
       </tbody>
@@ -77,62 +81,61 @@
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <td>Day 1</td>
+      <tr *ngFor="let day of days">
+        <td>{{day.name}}</td>
         <td>
-          <div>Kvas - 65.34g</div>
-          <div>Fish - 65.45g</div>
+          <div *ngFor="let mealIngredient of day.breakfast?.mealToIngredients">{{mealIngredient.ingredient.name}} - {{mealIngredient.amount}}g</div>
         </td>
         <td>
-          <div>Fish - 654.23g</div>
-          <div>Bread - 987.23g</div>
+          <div *ngFor="let mealIngredient of day.snack1?.mealToIngredients">{{mealIngredient.ingredient.name}} - {{mealIngredient.amount}}g</div>
         </td>
         <td>
-          <div>Honey - 212.43g</div>
+          <div *ngFor="let mealIngredient of day.lunch?.mealToIngredients">{{mealIngredient.ingredient.name}} - {{mealIngredient.amount}}g</div>
         </td>
         <td>
-          <div>Bread - 987.23g</div>
+          <div *ngFor="let mealIngredient of day.snack2?.mealToIngredients">{{mealIngredient.ingredient.name}} - {{mealIngredient.amount}}g</div>
         </td>
         <td>
-          <div>Fanta - 534.23g</div>
-          <div>Kvas - 65.34g</div>
-          <div>Honey - 212.43g</div>
-        </td>
-        <td>456.76<span class="value-deviation positive">+6.00</span></td>
-        <td>1746.11<span class="value-deviation negative">-1.18</span></td>
-        <td>843.65<span class="value-deviation positive">+10.43</span></td>
-        <td>90.32<span class="value-deviation negative">-7.88</span></td>
-        <td>
-          <button class="btn-light">Delete</button>
-        </td>
-      </tr>
-      <tr>
-        <td>Day 2</td>
-        <td>
-          <div>Kvas - 65.34g</div>
-          <div>Fish - 65.45g</div>
+          <div *ngFor="let mealIngredient of day.dinner?.mealToIngredients">{{mealIngredient.ingredient.name}} - {{mealIngredient.amount}}g</div>
         </td>
         <td>
-          <div>Fish - 654.23g</div>
-          <div>Bread - 987.23g</div>
+          {{day.calories | number: '1.0-0'}}
+          <span class="value-deviation"
+                [ngClass]="{'positive': day.caloriesDiff > 0, 'negative': day.caloriesDiff < 0}"
+                *ngIf="day.caloriesDiff != 0">
+            {{day.caloriesDiff > 0 ? '+' : ''}}{{day.caloriesDiff | number: '1.0-0'}}
+          </span>
         </td>
         <td>
-          <div>Honey - 212.43g</div>
+          {{day.fats | number: '1.0-0'}}
+          <span class="value-deviation"
+                [ngClass]="{'positive': day.fatsDiff > 0, 'negative': day.fatsDiff < 0}"
+                *ngIf="day.fatsDiff != 0">
+            {{day.fatsDiff > 0 ? '+' : ''}}{{day.fatsDiff | number: '1.0-0'}}
+          </span>
         </td>
         <td>
-          <div>Bread - 987.23g</div>
+          {{day.carbohydrates | number: '1.0-0'}}
+          <span class="value-deviation"
+                [ngClass]="{'positive': day.carbohydratesDiff > 0, 'negative': day.carbohydratesDiff < 0}"
+                *ngIf="day.carbohydratesDiff != 0">
+            {{day.carbohydratesDiff > 0 ? '+' : ''}}{{day.carbohydratesDiff | number: '1.0-0'}}
+          </span>
         </td>
         <td>
-          <div>Fanta - 534.23g</div>
-          <div>Kvas - 65.34g</div>
-          <div>Honey - 212.43g</div>
+          {{day.proteins | number: '1.0-0'}}
+          <span class="value-deviation"
+                [ngClass]="{'positive': day.proteinsDiff > 0, 'negative': day.proteinsDiff < 0}"
+                *ngIf="day.carbohydratesDiff != 0">
+            {{day.proteinsDiff > 0 ? '+' : ''}}{{day.proteinsDiff | number: '1.0-0'}}
+          </span>
         </td>
-        <td>456.76<span class="value-deviation positive">+6.00</span></td>
-        <td>1746.11<span class="value-deviation negative">-1.18</span></td>
-        <td>843.65<span class="value-deviation positive">+10.43</span></td>
-        <td>90.32<span class="value-deviation negative">-7.88</span></td>
         <td>
-          <button class="btn-light">Delete</button>
+          <button
+            (click)="deleteDay(day.id)"
+            class="btn-light">
+            Delete
+          </button>
         </td>
       </tr>
       </tbody>

@@ -4,8 +4,8 @@ import _ from "lodash";
 import { DaysService } from "../days.service";
 import { DayInterface } from "../day.interface";
 import { RecommendationsService } from "../../recommendations/recommendations.service";
-import { combineLatest, of } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { combineLatest } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Component({
   selector: 'ngx-tree-grid',
@@ -28,10 +28,10 @@ export class TreeGridComponent implements OnInit{
       .subscribe(
         (data) => {
           for (let meal of data) {
-            meal.calories = this.computeIngredientsPropSum(meal.mealToIngredients, 'calories');
-            meal.fats = this.computeIngredientsPropSum(meal.mealToIngredients, 'fats');
-            meal.carbohydrates = this.computeIngredientsPropSum(meal.mealToIngredients, 'carbohydrates');
-            meal.proteins = this.computeIngredientsPropSum(meal.mealToIngredients, 'proteins');
+            meal.calories = this.computeIngredientsPropSum(meal.mealToIngredients || [], 'calories');
+            meal.fats = this.computeIngredientsPropSum(meal.mealToIngredients || [], 'fats');
+            meal.carbohydrates = this.computeIngredientsPropSum(meal.mealToIngredients || [], 'carbohydrates');
+            meal.proteins = this.computeIngredientsPropSum(meal.mealToIngredients || [], 'proteins');
           }
           this.meals = data;
         },
@@ -60,15 +60,22 @@ export class TreeGridComponent implements OnInit{
     ])
       .pipe(
         map(([days, recommendations]) => {
-          console.log('days', days);
-          console.log('recommendations', recommendations);
+          recommendations = _.keyBy(recommendations, 'name');
 
-          return {};
+          for (let day of days) {
+            day.caloriesDiff = day.calories - recommendations.calories.amount;
+            day.fatsDiff = day.fats - recommendations.fats.amount;
+            day.proteinsDiff = day.proteins - recommendations.proteins.amount;
+            day.carbohydratesDiff = day.carbohydrates - recommendations.carbohydrates.amount;
+          }
+
+          return days;
         })
       )
       .subscribe(
         (data) => {
-          console.log('comb', data);
+          console.log(data);
+          this.days = data;
         },
         (e) => {
           console.log(e);
@@ -87,9 +94,42 @@ export class TreeGridComponent implements OnInit{
     let sum = 0;
 
     for (let meal of meals) {
-      sum += this.computeIngredientsPropSum(day[meal].mealToIngredients, prop);
+      sum += this.computeIngredientsPropSum(day[meal]?.mealToIngredients || [], prop);
     }
 
     return sum;
+  }
+
+  public deleteMeal(id: number): void {
+    let confirmed = confirm('Are you sure you want to delete this meal?');
+
+    if (confirmed) {
+      this.mealsService.delete(id)
+        .subscribe(
+          () => {
+            this.mealsService.refresh();
+            this.daysService.refresh();
+          },
+          (e) => {
+            console.log(e);
+          }
+        );
+    }
+  }
+
+  public deleteDay(id: number): void {
+    let confirmed = confirm('Are you sure you want to delete this day?');
+
+    if (confirmed) {
+      this.daysService.delete(id)
+        .subscribe(
+          () => {
+            this.daysService.refresh();
+          },
+          (e) => {
+            console.log(e);
+          }
+        );
+    }
   }
 }
