@@ -3,6 +3,8 @@ import { MealsService } from "../meals.service";
 import _ from "lodash";
 import { DaysService } from "../days.service";
 import { DayInterface } from "../day.interface";
+import { RecommendationsService } from "../../recommendations/recommendations.service";
+import { combineLatest } from "rxjs";
 
 @Component({
   selector: 'ngx-tree-grid',
@@ -17,13 +19,13 @@ export class TreeGridComponent implements OnInit{
   constructor(
     private mealsService: MealsService,
     private daysService: DaysService,
+    private recommendationsService: RecommendationsService,
   ) {}
 
   ngOnInit() {
     this.mealsService.get()
       .subscribe(
         (data) => {
-          console.log(data);
           for (let meal of data) {
             meal.calories = this.computeIngredientsPropSum(meal.mealToIngredients, 'calories');
             meal.fats = this.computeIngredientsPropSum(meal.mealToIngredients, 'fats');
@@ -37,10 +39,9 @@ export class TreeGridComponent implements OnInit{
         }
       );
 
-    this.daysService.get()
+    let days$ = this.daysService.get()
       .subscribe(
         (data) => {
-          console.log(data);
           for (let day of data) {
             day.calories = this.computeDayIngredientsPropSum(day, 'calories');
             day.fats = this.computeDayIngredientsPropSum(day, 'fats');
@@ -53,6 +54,8 @@ export class TreeGridComponent implements OnInit{
           console.log(e.message);
         }
       );
+
+    combineLatest();
   }
 
   private computeIngredientsPropSum(ingredients: any[], prop: string): number {
