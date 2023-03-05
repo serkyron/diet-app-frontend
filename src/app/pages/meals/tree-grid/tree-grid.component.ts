@@ -4,7 +4,8 @@ import _ from "lodash";
 import { DaysService } from "../days.service";
 import { DayInterface } from "../day.interface";
 import { RecommendationsService } from "../../recommendations/recommendations.service";
-import { combineLatest } from "rxjs";
+import { combineLatest, of } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
 
 @Component({
   selector: 'ngx-tree-grid',
@@ -40,22 +41,39 @@ export class TreeGridComponent implements OnInit{
       );
 
     let days$ = this.daysService.get()
-      .subscribe(
-        (data) => {
+      .pipe(
+        map((data) => {
           for (let day of data) {
             day.calories = this.computeDayIngredientsPropSum(day, 'calories');
             day.fats = this.computeDayIngredientsPropSum(day, 'fats');
             day.carbohydrates = this.computeDayIngredientsPropSum(day, 'carbohydrates');
             day.proteins = this.computeDayIngredientsPropSum(day, 'proteins');
           }
-          this.days = data;
-        },
-        (e) => {
-          console.log(e.message);
-        }
+
+          return data;
+        })
       );
 
-    combineLatest();
+    combineLatest([
+      days$,
+      this.recommendationsService.get()
+    ])
+      .pipe(
+        map(([days, recommendations]) => {
+          console.log('days', days);
+          console.log('recommendations', recommendations);
+
+          return {};
+        })
+      )
+      .subscribe(
+        (data) => {
+          console.log('comb', data);
+        },
+        (e) => {
+          console.log(e);
+        }
+      );
   }
 
   private computeIngredientsPropSum(ingredients: any[], prop: string): number {
