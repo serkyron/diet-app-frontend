@@ -28,13 +28,13 @@
           <span>{{meal.calories | number: '1.0-2'}}</span>
         </td>
         <td>
-          <span>13.54</span>
+          <span>{{meal.fats | number: '1.0-2'}}</span>
         </td>
         <td>
-          <span>78.34</span>
+          <span>{{meal.proteins | number: '1.0-2'}}</span>
         </td>
         <td>
-          <span>44.34</span>
+          <span>{{meal.carbohydrates | number: '1.0-2'}}</span>
         </td>
         <td class="w-25">
           <span *ngFor="let item of meal.mealToIngredients" class="ingredient-label">{{item.ingredient.name}} - {{item.amount}}g</span>
