@@ -1,4 +1,6 @@
+import { IngredientInterface } from "../ingredients/ingredient.interface";
+
 export interface MealIngredientInterface {
-  ingredient: any;
+  ingredient: IngredientInterface;
   amount: number;
 }

@@ -22,10 +22,10 @@
       </tr>
       </thead>
       <tbody>
-      <tr>
-        <td>Breakfast - Day1</td>
+      <tr *ngFor="let meal of meals">
+        <td>{{meal.name }}</td>
         <td>
-          <span>65.34</span>
+          <span>{{meal.calories | number: '1.0-2'}}</span>
         </td>
         <td>
           <span>13.54</span>
@@ -37,57 +37,7 @@
           <span>44.34</span>
         </td>
         <td class="w-25">
-          <span class="ingredient-label">Kvas - 34.65g</span>
-          <span class="ingredient-label">Kvas - 34.65g</span>
-          <span class="ingredient-label">Kvas - 34.65g</span>
-          <span class="ingredient-label">Beer - 198.12g</span>
-          <span class="ingredient-label">Fanta - 123.65g</span>
-        </td>
-        <td>
-          <button class="btn-light">Delete</button>
-        </td>
-      </tr>
-      <tr>
-        <td>Snack1 - Day1</td>
-        <td>
-          <span>65.34</span>
-        </td>
-        <td>
-          <span>13.54</span>
-        </td>
-        <td>
-          <span>78.34</span>
-        </td>
-        <td>
-          <span>44.34</span>
-        </td>
-        <td>
-          <span class="ingredient-label">Kvas - 34.65g</span>
-          <span class="ingredient-label">Beer - 198.12g</span>
-          <span class="ingredient-label">Fanta - 123.65g</span>
-        </td>
-        <td>
-          <button class="btn-light">Delete</button>
-        </td>
-      </tr>
-      <tr>
-        <td>Lunch - Day 1</td>
-        <td>
-          <span>65.34</span>
-        </td>
-        <td>
-          <span>13.54</span>
-        </td>
-        <td>
-          <span>78.34</span>
-        </td>
-        <td>
-          <span>44.34</span>
-        </td>
-        <td>
-          <span class="ingredient-label">Kvas - 34.65g</span>
-          <span class="ingredient-label">Beer - 198.12g</span>
-          <span class="ingredient-label">Fanta - 123.65g</span>
+          <span *ngFor="let item of meal.mealToIngredients" class="ingredient-label">{{item.ingredient.name}} - {{item.amount}}g</span>
         </td>
         <td>
           <button class="btn-light">Delete</button>
