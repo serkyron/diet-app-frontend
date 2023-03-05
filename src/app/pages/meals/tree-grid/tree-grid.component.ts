@@ -19,6 +19,7 @@ export class TreeGridComponent implements OnInit{
     this.mealsService.get()
       .subscribe(
         (data) => {
+          console.log(data);
           for (let meal of data) {
             meal.calories = _.reduce(meal.mealToIngredients, (sum, item) => {
               return sum + (item.amount * item.ingredient.calories) / 100;
