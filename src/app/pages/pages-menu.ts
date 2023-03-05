@@ -27,10 +27,6 @@ export const MENU_ITEMS: NbMenuItem[] = [
     link: '/pages/meals',
   },
   {
-    title: 'Recommendations',
-    link: '/pages/recommendations',
-  },
-  {
     title: 'FEATURES',
     group: true,
   },
