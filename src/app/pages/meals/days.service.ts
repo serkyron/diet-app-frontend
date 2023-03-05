@@ -3,7 +3,6 @@ import { HttpClient } from "@angular/common/http";
 import { HOST } from "../../@core/config/host";
 import { Observable, of, Subject } from "rxjs";
 import { switchMap } from "rxjs/operators";
-import { MealInterface } from "./meal.interface";
 import { DayInterface } from "./day.interface";
 
 @Injectable()
@@ -54,7 +53,7 @@ export class DaysService {
       );
   }
 
-  private castProperties(data: MealInterface) {
+  private castProperties(data: DayInterface) {
     for (let prop in data) {
       if (['name'].includes(prop)) {
         continue;

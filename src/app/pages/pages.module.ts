@@ -10,6 +10,7 @@ import { IngredientsService } from "./ingredients/ingredients.service";
 import { NbAuthModule } from "@nebular/auth";
 import { RecommendationsService } from "./recommendations/recommendations.service";
 import { MealsService } from "./meals/meals.service";
+import { DaysService } from "./meals/days.service";
 
 @NgModule({
   imports: [
@@ -28,6 +29,7 @@ import { MealsService } from "./meals/meals.service";
     IngredientsService,
     RecommendationsService,
     MealsService,
+    DaysService,
   ],
 })
 export class PagesModule {
