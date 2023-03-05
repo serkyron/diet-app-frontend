@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { RecommendationsService } from "../recommendations.service";
 import { NbComponentStatus, NbGlobalPhysicalPosition, NbToastrService } from "@nebular/theme";
+import _ from "lodash";
 
 @Component({
   selector: 'ngx-smart-table',
@@ -66,12 +67,19 @@ export class SmartTableComponent {
 
   private loadData(): void {
     this.ingredientsService.get()
-      .subscribe((data) => {
+      .subscribe(
+        (data) => {
+        data = _.orderBy(data, ['id'], ['desc']);
+
         this.source.load(data)
           .catch((e) => {
-            console.log(e.message());
+            this.showToast('danger', 'Failed to load data', e.error.message.join ? e.error.message.join(', ') : e.error.message);
           });
-      });
+      },
+        (e) => {
+          this.showToast('danger', 'Failed to load data', e.error.message.join ? e.error.message.join(', ') : e.error.message);
+        }
+      );
   }
 
   onDeleteConfirm(event): void {
@@ -81,7 +89,7 @@ export class SmartTableComponent {
           () => {event.confirm.resolve()},
           (e) => {
             event.confirm.reject();
-            console.log(e);
+            this.showToast('danger', 'Failed to delete', e.error.message.join ? e.error.message.join(', ') : e.error.message);
           }
         );
     } else {
@@ -98,7 +106,7 @@ export class SmartTableComponent {
         },
         (e) => {
           event.confirm.reject();
-          alert(e.error.message.join(', '));
+          this.showToast('danger', 'Failed to create', e.error.message.join ? e.error.message.join(', ') : e.error.message);
         }
       );
   }
@@ -109,7 +117,7 @@ export class SmartTableComponent {
         () => {event.confirm.resolve()},
         (e) => {
           event.confirm.reject();
-          alert(e.error.message.join(', '));
+          this.showToast('danger', 'Failed to update', e.error.message.join ? e.error.message.join(', ') : e.error.message);
         }
       );
   }
@@ -118,15 +126,12 @@ export class SmartTableComponent {
     const config = {
       status: type,
       destroyByClick: true,
-      duration: 2000,
+      duration: 5000,
       hasIcon: true,
       position: NbGlobalPhysicalPosition.TOP_RIGHT,
       preventDuplicates: false,
     };
 
-    this.toastrService.show(
-      body,
-      title,
-      config);
+    this.toastrService.show(body, title, config);
   }
 }

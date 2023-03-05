@@ -38,7 +38,7 @@ export class TreeGridComponent implements OnInit{
           this.meals = data;
         },
         (e) => {
-          console.log(e.message);
+          this.showToast('danger', 'Failed to load meals', e.error.message.join ? e.error.message.join(', ') : e.error.message);
         }
       );
 
@@ -63,12 +63,11 @@ export class TreeGridComponent implements OnInit{
       .pipe(
         map(([days, recommendations]) => {
           recommendations = _.keyBy(recommendations, 'name');
-
           for (let day of days) {
-            day.caloriesDiff = day.calories - recommendations.calories.amount;
-            day.fatsDiff = day.fats - recommendations.fats.amount;
-            day.proteinsDiff = day.proteins - recommendations.proteins.amount;
-            day.carbohydratesDiff = day.carbohydrates - recommendations.carbohydrates.amount;
+            day.caloriesDiff = day.calories - recommendations.calories?.amount;
+            day.fatsDiff = day.fats - recommendations.fats?.amount;
+            day.proteinsDiff = day.proteins - recommendations.proteins?.amount;
+            day.carbohydratesDiff = day.carbohydrates - recommendations.carbohydrates?.amount;
           }
 
           return days;
@@ -76,11 +75,11 @@ export class TreeGridComponent implements OnInit{
       )
       .subscribe(
         (data) => {
-          console.log(data);
           this.days = data;
         },
         (e) => {
-          console.log(e);
+          console.log('comb', e);
+          this.showToast('danger', 'Failed to load days', e.error.message.join ? e.error.message.join(', ') : e.error.message);
         }
       );
   }
@@ -113,7 +112,7 @@ export class TreeGridComponent implements OnInit{
             this.daysService.refresh();
           },
           (e) => {
-            console.log(e);
+            this.showToast('danger', 'Failed to delete', e.error.message.join ? e.error.message.join(', ') : e.error.message);
           }
         );
     }
@@ -129,7 +128,7 @@ export class TreeGridComponent implements OnInit{
             this.daysService.refresh();
           },
           (e) => {
-            console.log(e);
+            this.showToast('danger', 'Failed to delete', e.error.message.join ? e.error.message.join(', ') : e.error.message);
           }
         );
     }
@@ -139,15 +138,12 @@ export class TreeGridComponent implements OnInit{
     const config = {
       status: type,
       destroyByClick: true,
-      duration: 2000,
+      duration: 5000,
       hasIcon: true,
       position: NbGlobalPhysicalPosition.TOP_RIGHT,
       preventDuplicates: false,
     };
 
-    this.toastrService.show(
-      body,
-      title,
-      config);
+    this.toastrService.show(body, title, config);
   }
 }

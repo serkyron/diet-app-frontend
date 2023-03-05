@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { IngredientsService } from "../ingredients.service";
+import { NbComponentStatus, NbGlobalPhysicalPosition, NbToastrService } from "@nebular/theme";
+import _ from "lodash";
 
 @Component({
   selector: 'ngx-smart-table',
@@ -71,18 +73,28 @@ export class SmartTableComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private ingredientsService: IngredientsService) {
+  constructor(
+    private ingredientsService: IngredientsService,
+    private toastrService: NbToastrService,
+  ) {
     this.loadData();
   }
 
   private loadData(): void {
     this.ingredientsService.get()
-      .subscribe((data) => {
-        this.source.load(data)
-          .catch((e) => {
-            console.log(e.message());
-          });
-      });
+      .subscribe(
+        (data) => {
+          data = _.orderBy(data, ['id'], ['desc']);
+
+          this.source.load(data)
+            .catch((e) => {
+              this.showToast('danger', 'Failed to load data', e.error.message.join ? e.error.message.join(', ') : e.error.message);
+            });
+        },
+        (e) => {
+          this.showToast('danger', 'Failed to load data', e.error.message.join ? e.error.message.join(', ') : e.error.message);
+        }
+      );
   }
 
   onDeleteConfirm(event): void {
@@ -90,7 +102,10 @@ export class SmartTableComponent {
       this.ingredientsService.delete(event.data.id)
         .subscribe(
           () => {event.confirm.resolve()},
-          (e) => {event.confirm.reject()}
+          (e) => {
+            event.confirm.reject();
+            this.showToast('danger', 'Failed to delete', e.error.message.join ? e.error.message.join(', ') : e.error.message);
+          }
         );
     } else {
       event.confirm.reject();
@@ -106,7 +121,7 @@ export class SmartTableComponent {
         },
         (e) => {
           event.confirm.reject();
-          alert(e.error.message.join(', '));
+          this.showToast('danger', 'Failed to create', e.error.message.join ? e.error.message.join(', ') : e.error.message);
         }
       );
   }
@@ -117,8 +132,21 @@ export class SmartTableComponent {
         () => {event.confirm.resolve()},
         (e) => {
           event.confirm.reject();
-          alert(e.error.message.join(', '));
+          this.showToast('danger', 'Failed to update', e.error.message.join ? e.error.message.join(', ') : e.error.message);
         }
       );
+  }
+
+  private showToast(type: NbComponentStatus, title: string, body: string) {
+    const config = {
+      status: type,
+      destroyByClick: true,
+      duration: 5000,
+      hasIcon: true,
+      position: NbGlobalPhysicalPosition.TOP_RIGHT,
+      preventDuplicates: false,
+    };
+
+    this.toastrService.show(body, title, config);
   }
 }
