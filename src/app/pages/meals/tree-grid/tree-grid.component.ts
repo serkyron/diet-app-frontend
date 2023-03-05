@@ -6,6 +6,7 @@ import { DayInterface } from "../day.interface";
 import { RecommendationsService } from "../../recommendations/recommendations.service";
 import { combineLatest } from "rxjs";
 import { map } from "rxjs/operators";
+import { NbComponentStatus, NbGlobalPhysicalPosition, NbToastrService } from "@nebular/theme";
 
 @Component({
   selector: 'ngx-tree-grid',
@@ -21,6 +22,7 @@ export class TreeGridComponent implements OnInit{
     private mealsService: MealsService,
     private daysService: DaysService,
     private recommendationsService: RecommendationsService,
+    private toastrService: NbToastrService,
   ) {}
 
   ngOnInit() {
@@ -131,5 +133,21 @@ export class TreeGridComponent implements OnInit{
           }
         );
     }
+  }
+
+  private showToast(type: NbComponentStatus, title: string, body: string) {
+    const config = {
+      status: type,
+      destroyByClick: true,
+      duration: 2000,
+      hasIcon: true,
+      position: NbGlobalPhysicalPosition.TOP_RIGHT,
+      preventDuplicates: false,
+    };
+
+    this.toastrService.show(
+      body,
+      title,
+      config);
   }
 }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { RecommendationsService } from "../recommendations.service";
+import { NbComponentStatus, NbGlobalPhysicalPosition, NbToastrService } from "@nebular/theme";
 
 @Component({
   selector: 'ngx-smart-table',
@@ -56,7 +57,10 @@ export class SmartTableComponent {
 
   source: LocalDataSource = new LocalDataSource();
 
-  constructor(private ingredientsService: RecommendationsService) {
+  constructor(
+    private ingredientsService: RecommendationsService,
+    private toastrService: NbToastrService,
+  ) {
     this.loadData();
   }
 
@@ -75,7 +79,10 @@ export class SmartTableComponent {
       this.ingredientsService.delete(event.data.id)
         .subscribe(
           () => {event.confirm.resolve()},
-          (e) => {event.confirm.reject()}
+          (e) => {
+            event.confirm.reject();
+            console.log(e);
+          }
         );
     } else {
       event.confirm.reject();
@@ -105,5 +112,21 @@ export class SmartTableComponent {
           alert(e.error.message.join(', '));
         }
       );
+  }
+
+  private showToast(type: NbComponentStatus, title: string, body: string) {
+    const config = {
+      status: type,
+      destroyByClick: true,
+      duration: 2000,
+      hasIcon: true,
+      position: NbGlobalPhysicalPosition.TOP_RIGHT,
+      preventDuplicates: false,
+    };
+
+    this.toastrService.show(
+      body,
+      title,
+      config);
   }
 }
