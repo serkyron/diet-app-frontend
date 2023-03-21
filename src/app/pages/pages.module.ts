@@ -3,7 +3,7 @@ import {
   NbAutocompleteModule,
   NbButtonModule,
   NbCardModule,
-  NbCheckboxModule,
+  NbCheckboxModule, NbIconModule,
   NbInputModule,
   NbMenuModule,
 } from '@nebular/theme';
@@ -37,6 +37,7 @@ import { ReactiveFormsModule } from "@angular/forms";
     NbButtonModule,
     NbAutocompleteModule,
     ReactiveFormsModule,
+    NbIconModule,
   ],
   declarations: [
     PagesComponent,

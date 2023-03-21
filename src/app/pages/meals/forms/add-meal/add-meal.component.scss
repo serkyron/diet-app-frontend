@@ -18,6 +18,10 @@
     background: #3a5997;
     color: #fff;
     display: inline-flex;
+
+    .remove-ingredient {
+      cursor: pointer;
+    }
   }
 }
 
