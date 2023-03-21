@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { MealsService } from "../meals.service";
-import _ from "lodash";
-import { DaysService } from "../days.service";
-import { DayInterface } from "../day.interface";
-import { RecommendationsService } from "../../recommendations/recommendations.service";
-import { combineLatest } from "rxjs";
-import { map } from "rxjs/operators";
-import { NbComponentStatus, NbGlobalPhysicalPosition, NbToastrService } from "@nebular/theme";
+import { MealsService } from '../meals.service';
+import _ from 'lodash';
+import { DaysService } from '../days.service';
+import { DayInterface } from '../day.interface';
+import { RecommendationsService } from '../../recommendations/recommendations.service';
+import { combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { NbComponentStatus, NbDialogService, NbGlobalPhysicalPosition, NbToastrService } from '@nebular/theme';
+import { ShowcaseDialogComponent } from '../../modal-overlays/dialog/showcase-dialog/showcase-dialog.component';
+import { AddMealComponent } from "../forms/add-meal/add-meal.component";
 
 @Component({
   selector: 'ngx-tree-grid',
   templateUrl: './tree-grid.component.html',
   styleUrls: ['./tree-grid.component.scss'],
 })
-export class TreeGridComponent implements OnInit{
+export class TreeGridComponent implements OnInit {
 
   public meals: any[];
   public days: any[];
@@ -23,13 +25,14 @@ export class TreeGridComponent implements OnInit{
     private daysService: DaysService,
     private recommendationsService: RecommendationsService,
     private toastrService: NbToastrService,
+    private dialogService: NbDialogService,
   ) {}
 
   ngOnInit() {
     this.mealsService.get()
       .subscribe(
         (data) => {
-          for (let meal of data) {
+          for (const meal of data) {
             meal.calories = this.computeIngredientsPropSum(meal.mealToIngredients || [], 'calories');
             meal.fats = this.computeIngredientsPropSum(meal.mealToIngredients || [], 'fats');
             meal.carbohydrates = this.computeIngredientsPropSum(meal.mealToIngredients || [], 'carbohydrates');
@@ -39,13 +42,13 @@ export class TreeGridComponent implements OnInit{
         },
         (e) => {
           this.showToast('danger', 'Failed to load meals', e.error.message.join ? e.error.message.join(', ') : e.error.message);
-        }
+        },
       );
 
-    let days$ = this.daysService.get()
+    const days$ = this.daysService.get()
       .pipe(
         map((data) => {
-          for (let day of data) {
+          for (const day of data) {
             day.calories = this.computeDayIngredientsPropSum(day, 'calories');
             day.fats = this.computeDayIngredientsPropSum(day, 'fats');
             day.carbohydrates = this.computeDayIngredientsPropSum(day, 'carbohydrates');
@@ -53,17 +56,17 @@ export class TreeGridComponent implements OnInit{
           }
 
           return data;
-        })
+        }),
       );
 
     combineLatest([
       days$,
-      this.recommendationsService.get()
+      this.recommendationsService.get(),
     ])
       .pipe(
         map(([days, recommendations]) => {
           recommendations = _.keyBy(recommendations, 'name');
-          for (let day of days) {
+          for (const day of days) {
             day.caloriesDiff = day.calories - recommendations.calories?.amount;
             day.fatsDiff = day.fats - recommendations.fats?.amount;
             day.proteinsDiff = day.proteins - recommendations.proteins?.amount;
@@ -71,16 +74,15 @@ export class TreeGridComponent implements OnInit{
           }
 
           return days;
-        })
+        }),
       )
       .subscribe(
         (data) => {
           this.days = data;
         },
         (e) => {
-          console.log('comb', e);
           this.showToast('danger', 'Failed to load days', e.error.message.join ? e.error.message.join(', ') : e.error.message);
-        }
+        },
       );
   }
 
@@ -91,10 +93,10 @@ export class TreeGridComponent implements OnInit{
   }
 
   private computeDayIngredientsPropSum(day: DayInterface, prop: string): number {
-    let meals = ['breakfast', 'snack1', 'lunch', 'snack2', 'dinner'];
+    const meals = ['breakfast', 'snack1', 'lunch', 'snack2', 'dinner'];
     let sum = 0;
 
-    for (let meal of meals) {
+    for (const meal of meals) {
       sum += this.computeIngredientsPropSum(day[meal]?.mealToIngredients || [], prop);
     }
 
@@ -102,7 +104,7 @@ export class TreeGridComponent implements OnInit{
   }
 
   public deleteMeal(id: number): void {
-    let confirmed = confirm('Are you sure you want to delete this meal?');
+    const confirmed = confirm('Are you sure you want to delete this meal?');
 
     if (confirmed) {
       this.mealsService.delete(id)
@@ -113,13 +115,13 @@ export class TreeGridComponent implements OnInit{
           },
           (e) => {
             this.showToast('danger', 'Failed to delete', e.error.message.join ? e.error.message.join(', ') : e.error.message);
-          }
+          },
         );
     }
   }
 
   public deleteDay(id: number): void {
-    let confirmed = confirm('Are you sure you want to delete this day?');
+    const confirmed = confirm('Are you sure you want to delete this day?');
 
     if (confirmed) {
       this.daysService.delete(id)
@@ -129,7 +131,7 @@ export class TreeGridComponent implements OnInit{
           },
           (e) => {
             this.showToast('danger', 'Failed to delete', e.error.message.join ? e.error.message.join(', ') : e.error.message);
-          }
+          },
         );
     }
   }
@@ -145,5 +147,13 @@ export class TreeGridComponent implements OnInit{
     };
 
     this.toastrService.show(body, title, config);
+  }
+
+  public openAddMealForm() {
+    this.dialogService.open(AddMealComponent, {
+      context: {
+        title: 'NEW MEAL',
+      },
+    });
   }
 }

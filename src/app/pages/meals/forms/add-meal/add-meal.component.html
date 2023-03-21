@@ -1,0 +1,29 @@
+<div class="add-meal-form">
+  <nb-card>
+    <nb-card-header>{{ title }}</nb-card-header>
+    <nb-card-body>
+      <form>
+        <div class="form-group">
+          <label for="mealName" class="label">Name</label>
+          <input type="text" nbInput fullWidth id="mealName" placeholder="">
+        </div>
+        <div class="added-ingredients">
+          <span class="ingredient-label">Beer - 90g</span>
+        </div>
+        <nb-card>
+          <nb-card-body>
+            <meal-ingredient></meal-ingredient>
+            <div class="form-group">
+              <label for="amount" class="label">Amount (g)</label>
+              <input type="number" nbInput fullWidth id="amount">
+            </div>
+          </nb-card-body>
+        </nb-card>
+        <nb-card>
+          <button class="btn-info">Add</button>
+        </nb-card>
+        <button (click)="dismiss()" type="submit" nbButton status="danger">Submit</button>
+      </form>
+    </nb-card-body>
+  </nb-card>
+</div>

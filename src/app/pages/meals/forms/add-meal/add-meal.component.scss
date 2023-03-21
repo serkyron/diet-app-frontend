@@ -1,0 +1,23 @@
+@import '../../../../@theme/styles/themes';
+
+@include nb-install-component() {
+
+}
+
+.add-meal-form {
+  width: 800px;
+}
+
+.added-ingredients {
+  margin-bottom: 15px;
+  min-height: 50px;
+
+  .ingredient-label {
+    padding: 5px;
+    margin: 5px;
+    background: #3a5997;
+    color: #fff;
+    display: inline-flex;
+  }
+}
+
