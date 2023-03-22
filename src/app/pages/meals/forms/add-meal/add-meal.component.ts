@@ -4,10 +4,11 @@ import { Observable, of } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { IngredientsService } from '../../../ingredients/ingredients.service';
+import _ from 'lodash';
 
-export interface Group {
-  name: string;
-  children: string[];
+export interface MealIngredient {
+  ingredient: any;
+  amount: number;
 }
 
 @Component({
@@ -19,6 +20,7 @@ export class AddMealComponent implements OnInit {
   @Input() title: string;
   public ingredients: any[];
   formGroup: FormGroup;
+  mealIngredients: MealIngredient[] = [];
 
   constructor(
     protected ref: NbDialogRef<AddMealComponent>,
@@ -30,12 +32,17 @@ export class AddMealComponent implements OnInit {
   ngOnInit() {
     this.formGroup = this.fb.group({
       name: [null, [Validators.required]],
+      ingredient: [null],
+      amount: [null],
     });
 
     this.ingredientService.get()
       .subscribe(
         (data) => {
-          this.ingredients = data;
+          this.ingredients = data.map((ingredient) => {
+            ingredient.title = `${ingredient.name} - ${ingredient.calories} calories`;
+            return ingredient;
+          });
         },
         (e) => {
           const body = e.error.message.join ? e.error.message.join(', ') : e.error.message;
@@ -57,12 +64,43 @@ export class AddMealComponent implements OnInit {
     this.toastrService.show(body, title, config);
   }
 
-  dismiss() {
+  submit(): void {
+    if (this.mealIngredients.length === 0) {
+      this.showToast('danger', 'Ingredients required', 'Ingredients cannot be empty');
+
+      return;
+    }
+
     this.ref.close();
   }
 
   isControlInvalid(controlName: string): boolean {
     const control = this.formGroup.controls[controlName];
     return control.invalid && control.touched;
+  }
+
+  public removeIngredient(id: number): void {
+    _.remove(this.mealIngredients, (item) => item.ingredient.id === id);
+  }
+
+  public addIngredient(): void {
+    const formValue = this.formGroup.value;
+
+    if (formValue.ingredient === null || formValue.amount === null) {
+      this.showToast('danger', 'Ingredient not added', 'Select both ingredient and amount');
+
+      return;
+    }
+
+    if (_.find(this.mealIngredients, (item) => item.ingredient.id === formValue.ingredient.id)) {
+      this.showToast('danger', 'Cannot add ingredient twice', `${formValue.ingredient.name} is already added`);
+
+      return;
+    }
+
+    this.mealIngredients.push({
+      ingredient: formValue.ingredient,
+      amount: formValue.amount,
+    });
   }
 }

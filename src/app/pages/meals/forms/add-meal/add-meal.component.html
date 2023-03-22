@@ -11,13 +11,17 @@
             </span>
         </div>
         <div class="added-ingredients">
-          <span class="ingredient-label">Beer - 90g<nb-icon class="remove-ingredient" icon="close"></nb-icon></span>
+          <span *ngIf="mealIngredients.length === 0">...</span>
+          <span *ngFor="let mealIngredient of mealIngredients" class="ingredient-label">
+            {{mealIngredient.ingredient.name}} - {{mealIngredient.amount}}g
+            <nb-icon (click)="removeIngredient(mealIngredient.ingredient.id)" class="remove-ingredient" icon="close"></nb-icon>
+          </span>
         </div>
         <label class="label">Ingredient</label>
         <div class="form-group">
           <ng-select [items]="ingredients"
-                     bindLabel="name"
-                     bindValue="id"
+                     bindLabel="title"
+                     formControlName="ingredient"
                      groupBy="category">
             <ng-template ng-optgroup-tmp let-item="item">
               {{item.category || 'Unnamed group'}}
@@ -26,12 +30,12 @@
         </div>
         <div class="form-group">
           <label for="amount" class="label">Amount (g)</label>
-          <input type="number" nbInput fullWidth id="amount">
+          <input formControlName="amount" type="number" nbInput fullWidth id="amount">
         </div>
         <nb-card>
-          <button class="btn-info add-ingredient-btn">ADD</button>
+          <button (click)="addIngredient()" class="btn-info add-ingredient-btn">ADD</button>
         </nb-card>
-        <button class="submit-btn" (click)="dismiss()" type="submit" nbButton status="danger">Submit</button>
+        <button [disabled]="formGroup.invalid" class="submit-btn" (click)="submit()" type="submit" nbButton status="danger">Submit</button>
       </form>
     </nb-card-body>
   </nb-card>
