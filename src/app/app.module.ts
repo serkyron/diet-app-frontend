@@ -25,6 +25,7 @@ import { NB_AUTH_TOKEN_INTERCEPTOR_FILTER, NbAuthJWTInterceptor } from "@nebular
 import { PagesModule } from "./pages/pages.module";
 import { IngredientsService } from "./pages/ingredients/ingredients.service";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [AppComponent],
@@ -46,6 +47,8 @@ import { NgSelectModule } from "@ng-select/ng-select";
     AuthModule,
     HttpClientModule,
     NgSelectModule,
+    ReactiveFormsModule,
+    FormsModule,
   ],
   bootstrap: [AppComponent],
   providers: [

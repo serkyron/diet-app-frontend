@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NbComponentStatus, NbDialogRef, NbGlobalPhysicalPosition, NbToastrService } from '@nebular/theme';
 import { Observable, of } from 'rxjs';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { IngredientsService } from '../../../ingredients/ingredients.service';
 
@@ -18,14 +18,20 @@ export interface Group {
 export class AddMealComponent implements OnInit {
   @Input() title: string;
   public ingredients: any[];
+  formGroup: FormGroup;
 
   constructor(
     protected ref: NbDialogRef<AddMealComponent>,
     private ingredientService: IngredientsService,
     private toastrService: NbToastrService,
+    private fb: FormBuilder,
   ) {}
 
   ngOnInit() {
+    this.formGroup = this.fb.group({
+      name: [null, [Validators.required]],
+    });
+
     this.ingredientService.get()
       .subscribe(
         (data) => {
@@ -53,5 +59,10 @@ export class AddMealComponent implements OnInit {
 
   dismiss() {
     this.ref.close();
+  }
+
+  isControlInvalid(controlName: string): boolean {
+    const control = this.formGroup.controls[controlName];
+    return control.invalid && control.touched;
   }
 }

@@ -2,10 +2,13 @@
   <nb-card class="add-meal-card">
     <nb-card-header>{{ title }}</nb-card-header>
     <nb-card-body>
-      <form>
-        <div class="form-group">
+      <form [formGroup]="formGroup">
+        <div class="form-group meal-name-group">
           <label for="mealName" class="label">Name</label>
-          <input type="text" nbInput fullWidth id="mealName" placeholder="">
+          <input formControlName="name" type="text" nbInput fullWidth id="mealName" placeholder="">
+          <span *ngIf="isControlInvalid('name')" class="validation-error-text">
+              <span>*</span> Meal name is required
+            </span>
         </div>
         <div class="added-ingredients">
           <span class="ingredient-label">Beer - 90g<nb-icon class="remove-ingredient" icon="close"></nb-icon></span>
