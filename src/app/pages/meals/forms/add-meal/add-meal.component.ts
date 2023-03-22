@@ -65,12 +65,6 @@ export class AddMealComponent implements OnInit {
   }
 
   submit(): void {
-    if (this.mealIngredients.length === 0) {
-      this.showToast('danger', 'Ingredients required', 'Ingredients cannot be empty');
-
-      return;
-    }
-
     this.ref.close();
   }
 

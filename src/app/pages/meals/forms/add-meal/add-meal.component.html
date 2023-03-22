@@ -35,7 +35,7 @@
         <nb-card>
           <button (click)="addIngredient()" class="btn-info add-ingredient-btn">ADD</button>
         </nb-card>
-        <button [disabled]="formGroup.invalid" class="submit-btn" (click)="submit()" type="submit" nbButton status="danger">Submit</button>
+        <button [disabled]="formGroup.invalid || !mealIngredients.length" class="submit-btn" (click)="submit()" type="submit" nbButton status="danger">Submit</button>
       </form>
     </nb-card-body>
   </nb-card>
