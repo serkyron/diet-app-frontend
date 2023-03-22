@@ -9,6 +9,7 @@ import { map } from 'rxjs/operators';
 import { NbComponentStatus, NbDialogService, NbGlobalPhysicalPosition, NbToastrService } from '@nebular/theme';
 import { AddMealComponent } from '../forms/add-meal/add-meal.component';
 import { MealInterface } from '../meal.interface';
+import { AddDayComponent } from "../forms/add-day/add-day.component";
 
 @Component({
   selector: 'ngx-tree-grid',
@@ -20,6 +21,7 @@ export class TreeGridComponent implements OnInit {
   public meals: any[];
   public days: any[];
   public addMealSubject: Subject<MealInterface> = new Subject<MealInterface>();
+  public addDaySubject: Subject<DayInterface> = new Subject<DayInterface>();
 
   constructor(
     private mealsService: MealsService,
@@ -168,6 +170,15 @@ export class TreeGridComponent implements OnInit {
       context: {
         title: 'NEW MEAL',
         addMealSubject: this.addMealSubject,
+      },
+    });
+  }
+
+  public openAddDayForm() {
+    this.dialogService.open(AddDayComponent, {
+      context: {
+        title: 'NEW DAY',
+        addDaySubject: this.addDaySubject,
       },
     });
   }

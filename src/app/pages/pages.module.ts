@@ -22,6 +22,7 @@ import { AddMealComponent } from './meals/forms/add-meal/add-meal.component';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { NgSelectModule } from "@ng-select/ng-select";
+import { AddDayComponent } from "./meals/forms/add-day/add-day.component";
 
 @NgModule({
   imports: [
@@ -45,6 +46,7 @@ import { NgSelectModule } from "@ng-select/ng-select";
   declarations: [
     PagesComponent,
     AddMealComponent,
+    AddDayComponent,
   ],
   providers: [
     IngredientsService,

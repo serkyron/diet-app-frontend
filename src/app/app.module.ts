@@ -27,6 +27,7 @@ import { IngredientsService } from "./pages/ingredients/ingredients.service";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MealsService } from "./pages/meals/meals.service";
+import { DaysService } from "./pages/meals/days.service";
 
 @NgModule({
   declarations: [AppComponent],
@@ -57,6 +58,7 @@ import { MealsService } from "./pages/meals/meals.service";
     { provide: HTTP_INTERCEPTORS, useClass: NbAuthJWTInterceptor, multi: true },
     IngredientsService,
     MealsService,
+    DaysService,
   ],
 })
 export class AppModule {
