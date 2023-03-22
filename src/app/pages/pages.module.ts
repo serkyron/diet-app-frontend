@@ -19,8 +19,8 @@ import { RecommendationsService } from './recommendations/recommendations.servic
 import { MealsService } from './meals/meals.service';
 import { DaysService } from './meals/days.service';
 import { AddMealComponent } from './meals/forms/add-meal/add-meal.component';
-import { MealIngredientComponent } from './meals/form-elements/meal-ingredient/meal-ingredient.component';
-import { ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { CommonModule } from "@angular/common";
 
 @NgModule({
   imports: [
@@ -42,7 +42,6 @@ import { ReactiveFormsModule } from "@angular/forms";
   declarations: [
     PagesComponent,
     AddMealComponent,
-    MealIngredientComponent,
   ],
   providers: [
     IngredientsService,

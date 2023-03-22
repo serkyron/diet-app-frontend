@@ -1,8 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { NbDialogRef } from '@nebular/theme';
+import { NbDialogRef, NbToastrService } from '@nebular/theme';
 import { Observable, of } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
+import { IngredientsService } from "../../../ingredients/ingredients.service";
 
 export interface Group {
   name: string;
@@ -16,8 +17,13 @@ export interface Group {
 })
 export class AddMealComponent implements OnInit {
   @Input() title: string;
+  public ingredients: any[];
 
-  constructor(protected ref: NbDialogRef<AddMealComponent>) {}
+  constructor(
+    protected ref: NbDialogRef<AddMealComponent>,
+    private ingredientService: IngredientsService,
+    private toastrService: NbToastrService,
+  ) {}
 
   ngOnInit() {
   }
