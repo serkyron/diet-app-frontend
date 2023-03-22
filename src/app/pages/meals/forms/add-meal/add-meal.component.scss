@@ -1,11 +1,16 @@
 @import '../../../../@theme/styles/themes';
+@import "~@ng-select/ng-select/themes/material.theme.css";
 
-@include nb-install-component() {
-
-}
+//@include nb-install-component() {
+//
+//}
 
 .add-meal-form {
   width: 800px;
+  .submit-btn {
+    position: absolute;
+    bottom: 5%;
+  }
 }
 
 .added-ingredients {
@@ -25,3 +30,10 @@
   }
 }
 
+.ng-select {
+  padding-bottom: 0.25em;
+}
+
+.add-meal-card {
+  min-height: 80vh;
+}

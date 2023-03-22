@@ -1,5 +1,5 @@
 <div class="add-meal-form">
-  <nb-card>
+  <nb-card class="add-meal-card">
     <nb-card-header>{{ title }}</nb-card-header>
     <nb-card-body>
       <form>
@@ -10,26 +10,25 @@
         <div class="added-ingredients">
           <span class="ingredient-label">Beer - 90g<nb-icon class="remove-ingredient" icon="close"></nb-icon></span>
         </div>
-        <nb-card>
-          <nb-card-body>
-<!--            <ng-select [items]="ingredients"-->
-<!--                       bindLabel="name"-->
-<!--                       bindValue="id"-->
-<!--                       groupBy="category">-->
-<!--              <ng-template ng-optgroup-tmp let-item="item">-->
-<!--                {{item.category || 'Unnamed group'}}-->
-<!--              </ng-template>-->
-<!--            </ng-select>-->
-            <div class="form-group">
-              <label for="amount" class="label">Amount (g)</label>
-              <input type="number" nbInput fullWidth id="amount">
-            </div>
-          </nb-card-body>
-        </nb-card>
+        <label class="label">Ingredient</label>
+        <div class="form-group">
+          <ng-select [items]="ingredients"
+                     bindLabel="name"
+                     bindValue="id"
+                     groupBy="category">
+            <ng-template ng-optgroup-tmp let-item="item">
+              {{item.category || 'Unnamed group'}}
+            </ng-template>
+          </ng-select>
+        </div>
+        <div class="form-group">
+          <label for="amount" class="label">Amount (g)</label>
+          <input type="number" nbInput fullWidth id="amount">
+        </div>
         <nb-card>
           <button class="btn-info">ADD</button>
         </nb-card>
-        <button (click)="dismiss()" type="submit" nbButton status="danger">Submit</button>
+        <button class="submit-btn" (click)="dismiss()" type="submit" nbButton status="danger">Submit</button>
       </form>
     </nb-card-body>
   </nb-card>

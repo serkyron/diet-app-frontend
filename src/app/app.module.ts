@@ -24,6 +24,7 @@ import { AuthModule } from "./auth/auth.module";
 import { NB_AUTH_TOKEN_INTERCEPTOR_FILTER, NbAuthJWTInterceptor } from "@nebular/auth";
 import { PagesModule } from "./pages/pages.module";
 import { IngredientsService } from "./pages/ingredients/ingredients.service";
+import { NgSelectModule } from "@ng-select/ng-select";
 
 @NgModule({
   declarations: [AppComponent],
@@ -44,6 +45,7 @@ import { IngredientsService } from "./pages/ingredients/ingredients.service";
     ThemeModule.forRoot(),
     AuthModule,
     HttpClientModule,
+    NgSelectModule,
   ],
   bootstrap: [AppComponent],
   providers: [
