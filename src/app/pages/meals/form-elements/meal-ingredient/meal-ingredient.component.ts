@@ -3,10 +3,11 @@ import { Observable, of } from 'rxjs';
 
 import { FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
+import { IngredientsService } from '../../../ingredients/ingredients.service';
 
 export interface Group {
   name: string;
-  children: string[];
+  children: any[];
 }
 
 @Component({
@@ -20,20 +21,22 @@ export class MealIngredientComponent implements OnInit {
   filteredGroups$: Observable<Group[]>;
   inputFormControl: FormControl;
 
+  public ingredients: any[];
+
+  constructor(
+    // private ingredientService: IngredientsService,
+  ) {}
+
   ngOnInit() {
 
     this.groups = [
       {
         name: 'Group 1',
-        children: ['Option 11', 'Option 12', 'Option 13'],
+        children: [{name: 'Option 11', id: 1}, {name: 'Option 12', id: 2}, {name: 'Option 13', id: 3}],
       },
       {
         name: 'Group 2',
-        children: ['Option 21', 'Option 22', 'Option 23'],
-      },
-      {
-        name: 'Group 3',
-        children: ['Option 31', 'Option 32', 'Option 33'],
+        children: [{name: 'Option 21', id: 3}, {name: 'Option 22', id: 4}, {name: 'Option 23', id: 5}],
       }];
 
     this.filteredGroups$ = of(this.groups);
@@ -47,8 +50,8 @@ export class MealIngredientComponent implements OnInit {
 
   }
 
-  private filterChildren(children: string[], filterValue: string) {
-    return children.filter(optionValue => optionValue.toLowerCase().includes(filterValue));
+  private filterChildren(children: any[], filterValue: string) {
+    return children.filter(option => option.name.toLowerCase().includes(filterValue));
   }
 
   private filter(value: string): Group[] {

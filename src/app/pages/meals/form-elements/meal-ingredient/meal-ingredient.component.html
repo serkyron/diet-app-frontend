@@ -11,8 +11,8 @@
   <nb-autocomplete #auto>
 
     <nb-option-group *ngFor="let group of filteredGroups$ | async; trackBy: trackByFn"  [title]="group.name" >
-      <nb-option *ngFor="let option of group.children" [value]="option">
-        {{ option }}
+      <nb-option *ngFor="let option of group.children" [value]="option.id">
+        {{ option.name }}
       </nb-option>
     </nb-option-group>
 
