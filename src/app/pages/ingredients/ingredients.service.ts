@@ -17,7 +17,7 @@ export class IngredientsService {
       .pipe(
         switchMap((response: any) => {
           return of(response.data);
-        })
+        }),
       );
   }
 
@@ -32,7 +32,7 @@ export class IngredientsService {
       .pipe(
         switchMap((response: any) => {
           return of(response.data);
-        })
+        }),
       );
   }
 
@@ -43,12 +43,12 @@ export class IngredientsService {
       .pipe(
         switchMap((response: any) => {
           return of(response.data);
-        })
+        }),
       );
   }
 
   private castProperties(data: IngredientInterface) {
-    for (let prop in data) {
+    for (const prop in data) {
       if (['name', 'category'].includes(prop)) {
         continue;
       }

@@ -23,6 +23,7 @@ import {
 import { AuthModule } from "./auth/auth.module";
 import { NB_AUTH_TOKEN_INTERCEPTOR_FILTER, NbAuthJWTInterceptor } from "@nebular/auth";
 import { PagesModule } from "./pages/pages.module";
+import { IngredientsService } from "./pages/ingredients/ingredients.service";
 
 @NgModule({
   declarations: [AppComponent],
@@ -46,8 +47,9 @@ import { PagesModule } from "./pages/pages.module";
   ],
   bootstrap: [AppComponent],
   providers: [
-    { provide: NB_AUTH_TOKEN_INTERCEPTOR_FILTER, useValue: function () { return false; }, },
+    { provide: NB_AUTH_TOKEN_INTERCEPTOR_FILTER, useValue: function () { return false; } },
     { provide: HTTP_INTERCEPTORS, useClass: NbAuthJWTInterceptor, multi: true },
+    IngredientsService,
   ],
 })
 export class AppModule {

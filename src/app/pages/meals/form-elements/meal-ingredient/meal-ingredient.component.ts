@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Observable, of } from 'rxjs';
-
+import _ from 'lodash';
 import { FormControl } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { IngredientsService } from '../../../ingredients/ingredients.service';
+import { NbComponentStatus, NbGlobalPhysicalPosition, NbToastrService } from '@nebular/theme';
 
 export interface Group {
   name: string;
@@ -24,30 +25,48 @@ export class MealIngredientComponent implements OnInit {
   public ingredients: any[];
 
   constructor(
-    // private ingredientService: IngredientsService,
+    private ingredientService: IngredientsService,
+    private toastrService: NbToastrService,
   ) {}
 
   ngOnInit() {
-
-    this.groups = [
-      {
-        name: 'Group 1',
-        children: [{name: 'Option 11', id: 1}, {name: 'Option 12', id: 2}, {name: 'Option 13', id: 3}],
-      },
-      {
-        name: 'Group 2',
-        children: [{name: 'Option 21', id: 3}, {name: 'Option 22', id: 4}, {name: 'Option 23', id: 5}],
-      }];
-
-    this.filteredGroups$ = of(this.groups);
     this.inputFormControl = new FormControl();
 
+    this.ingredientService.get()
+      .subscribe(
+        (data) => {
+          const groupedIngredients = _.groupBy(data, function (item) {
+            return item.category;
+          });
+
+          this.groups = [];
+          for (const groupName in groupedIngredients) {
+            if (!groupedIngredients.hasOwnProperty(groupName)) {
+              continue;
+            }
+
+            this.groups.push({
+              name: groupName,
+              children: groupedIngredients[groupName],
+            });
+          }
+
+          this.initDropdown();
+        },
+        (e) => {
+          const body = e.error.message.join ? e.error.message.join(', ') : e.error.message;
+          this.showToast('danger', 'Failed to load data', body);
+        },
+      );
+  }
+
+  private initDropdown() {
+    this.filteredGroups$ = of(this.groups);
     this.filteredGroups$ = this.inputFormControl.valueChanges
       .pipe(
         startWith(''),
         map(filterString => this.filter(filterString)),
       );
-
   }
 
   private filterChildren(children: any[], filterValue: string) {
@@ -68,6 +87,19 @@ export class MealIngredientComponent implements OnInit {
 
   trackByFn(index, item) {
     return item.name;
+  }
+
+  private showToast(type: NbComponentStatus, title: string, body: string) {
+    const config = {
+      status: type,
+      destroyByClick: true,
+      duration: 5000,
+      hasIcon: true,
+      position: NbGlobalPhysicalPosition.TOP_RIGHT,
+      preventDuplicates: false,
+    };
+
+    this.toastrService.show(body, title, config);
   }
 
 }
