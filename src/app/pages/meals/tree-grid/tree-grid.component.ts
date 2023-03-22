@@ -4,11 +4,11 @@ import _ from 'lodash';
 import { DaysService } from '../days.service';
 import { DayInterface } from '../day.interface';
 import { RecommendationsService } from '../../recommendations/recommendations.service';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NbComponentStatus, NbDialogService, NbGlobalPhysicalPosition, NbToastrService } from '@nebular/theme';
-import { ShowcaseDialogComponent } from '../../modal-overlays/dialog/showcase-dialog/showcase-dialog.component';
-import { AddMealComponent } from "../forms/add-meal/add-meal.component";
+import { AddMealComponent } from '../forms/add-meal/add-meal.component';
+import { MealInterface } from '../meal.interface';
 
 @Component({
   selector: 'ngx-tree-grid',
@@ -19,6 +19,7 @@ export class TreeGridComponent implements OnInit {
 
   public meals: any[];
   public days: any[];
+  public addMealSubject: Subject<MealInterface> = new Subject<MealInterface>();
 
   constructor(
     private mealsService: MealsService,
@@ -29,6 +30,15 @@ export class TreeGridComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.addMealSubject.asObservable()
+      .subscribe((meal: any) => {
+        meal.calories = this.computeIngredientsPropSum(meal.mealToIngredients || [], 'calories');
+        meal.fats = this.computeIngredientsPropSum(meal.mealToIngredients || [], 'fats');
+        meal.carbohydrates = this.computeIngredientsPropSum(meal.mealToIngredients || [], 'carbohydrates');
+        meal.proteins = this.computeIngredientsPropSum(meal.mealToIngredients || [], 'proteins');
+        this.meals.push(meal);
+      });
+
     this.mealsService.get()
       .subscribe(
         (data) => {
@@ -41,7 +51,8 @@ export class TreeGridComponent implements OnInit {
           this.meals = data;
         },
         (e) => {
-          this.showToast('danger', 'Failed to load meals', e.error.message.join ? e.error.message.join(', ') : e.error.message);
+          const body = e.error.message.join ? e.error.message.join(', ') : e.error.message;
+          this.showToast('danger', 'Failed to load meals', body);
         },
       );
 
@@ -81,7 +92,8 @@ export class TreeGridComponent implements OnInit {
           this.days = data;
         },
         (e) => {
-          this.showToast('danger', 'Failed to load days', e.error.message.join ? e.error.message.join(', ') : e.error.message);
+          const body = e.error.message.join ? e.error.message.join(', ') : e.error.message;
+          this.showToast('danger', 'Failed to load days', body);
         },
       );
   }
@@ -114,7 +126,8 @@ export class TreeGridComponent implements OnInit {
             this.daysService.refresh();
           },
           (e) => {
-            this.showToast('danger', 'Failed to delete', e.error.message.join ? e.error.message.join(', ') : e.error.message);
+            const body = e.error.message.join ? e.error.message.join(', ') : e.error.message;
+            this.showToast('danger', 'Failed to delete', body);
           },
         );
     }
@@ -130,7 +143,8 @@ export class TreeGridComponent implements OnInit {
             this.daysService.refresh();
           },
           (e) => {
-            this.showToast('danger', 'Failed to delete', e.error.message.join ? e.error.message.join(', ') : e.error.message);
+            const body = e.error.message.join ? e.error.message.join(', ') : e.error.message;
+            this.showToast('danger', 'Failed to delete', body);
           },
         );
     }
@@ -153,6 +167,7 @@ export class TreeGridComponent implements OnInit {
     this.dialogService.open(AddMealComponent, {
       context: {
         title: 'NEW MEAL',
+        addMealSubject: this.addMealSubject,
       },
     });
   }

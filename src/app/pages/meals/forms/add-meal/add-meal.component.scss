@@ -1,12 +1,10 @@
 @import '../../../../@theme/styles/themes';
 @import "~@ng-select/ng-select/themes/material.theme.css";
 
-//@include nb-install-component() {
-//
-//}
-
 .add-meal-form {
-  width: 800px;
+  @media (min-width: 1250px) {
+    width: 800px;
+  }
   .submit-btn {
     position: absolute;
     bottom: 5%;

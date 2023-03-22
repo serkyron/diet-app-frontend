@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { NbComponentStatus, NbDialogRef, NbGlobalPhysicalPosition, NbToastrService } from '@nebular/theme';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subject } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, startWith } from 'rxjs/operators';
 import { IngredientsService } from '../../../ingredients/ingredients.service';
 import _ from 'lodash';
-import { MealsService } from "../../meals.service";
+import { MealsService } from '../../meals.service';
+import { MealInterface } from '../../meal.interface';
 
 export interface MealIngredient {
   ingredient: any;
@@ -19,6 +20,7 @@ export interface MealIngredient {
 })
 export class AddMealComponent implements OnInit {
   @Input() title: string;
+  @Input() addMealSubject: Subject<MealInterface>;
   public ingredients: any[];
   formGroup: FormGroup;
   mealIngredients: MealIngredient[] = [];
@@ -82,16 +84,17 @@ export class AddMealComponent implements OnInit {
 
     this.mealService.create(data)
       .subscribe(
-        () => {
-          this.showToast('info', 'Meal added', `${data.name} added successfully`);
+        (response) => {
+          const meal = response.pop();
+          this.ref.close();
+          this.showToast('info', 'Meal added', `${meal.name} added successfully`);
+          this.addMealSubject.next(meal);
         },
         (e) => {
           const body = e.error.message.join ? e.error.message.join(', ') : e.error.message;
           this.showToast('danger', 'Failed to create meal', body);
         },
       );
-
-    this.ref.close();
   }
 
   isControlInvalid(controlName: string): boolean {
