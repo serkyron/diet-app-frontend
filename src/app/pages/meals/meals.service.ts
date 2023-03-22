@@ -3,7 +3,6 @@ import { HttpClient } from "@angular/common/http";
 import { HOST } from "../../@core/config/host";
 import { Observable, of, Subject } from "rxjs";
 import { switchMap } from "rxjs/operators";
-import { MealInterface } from "./meal.interface";
 
 @Injectable()
 export class MealsService {
@@ -20,11 +19,11 @@ export class MealsService {
       .pipe(
         switchMap((response: any) => {
           return of(response.data);
-        })
+        }),
       )
       .subscribe(
         (data) => this.meals$.next(data),
-        (e) => this.meals$.error(e)
+        (e) => this.meals$.error(e),
       );
   }
 
@@ -42,23 +41,12 @@ export class MealsService {
     return this.http.delete(`${HOST.baseUrl}/meal/${id}`);
   }
 
-  public create(data: MealInterface): Observable<any> {
-    this.castProperties(data);
-
+  public create(data: any): Observable<any> {
     return this.http.put(`${HOST.baseUrl}/meal`, data)
       .pipe(
         switchMap((response: any) => {
           return of(response.data);
-        })
+        }),
       );
-  }
-
-  private castProperties(data: MealInterface) {
-    for (let prop in data) {
-      if (['name'].includes(prop)) {
-        continue;
-      }
-      data[prop] = parseFloat(data[prop]);
-    }
   }
 }

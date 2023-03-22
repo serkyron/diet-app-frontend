@@ -5,6 +5,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { map, startWith } from 'rxjs/operators';
 import { IngredientsService } from '../../../ingredients/ingredients.service';
 import _ from 'lodash';
+import { MealsService } from "../../meals.service";
 
 export interface MealIngredient {
   ingredient: any;
@@ -25,9 +26,11 @@ export class AddMealComponent implements OnInit {
   constructor(
     protected ref: NbDialogRef<AddMealComponent>,
     private ingredientService: IngredientsService,
+    private mealService: MealsService,
     private toastrService: NbToastrService,
     private fb: FormBuilder,
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.formGroup = this.fb.group({
@@ -65,6 +68,29 @@ export class AddMealComponent implements OnInit {
   }
 
   submit(): void {
+    const ingredients = this.mealIngredients.map((item: MealIngredient) => {
+      return {
+        ingredient: {id: item.ingredient.id},
+        amount: item.amount,
+      };
+    });
+
+    const data = {
+      name: this.formGroup.value.name,
+      ingredients: ingredients,
+    };
+
+    this.mealService.create(data)
+      .subscribe(
+        () => {
+          this.showToast('info', 'Meal added', `${data.name} added successfully`);
+        },
+        (e) => {
+          const body = e.error.message.join ? e.error.message.join(', ') : e.error.message;
+          this.showToast('danger', 'Failed to create meal', body);
+        },
+      );
+
     this.ref.close();
   }
 
@@ -96,5 +122,8 @@ export class AddMealComponent implements OnInit {
       ingredient: formValue.ingredient,
       amount: formValue.amount,
     });
+
+    this.formGroup.controls.ingredient.setValue(null);
+    this.formGroup.controls.amount.setValue(null);
   }
 }
