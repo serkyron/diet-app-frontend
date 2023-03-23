@@ -2,13 +2,10 @@ import { Component, Input, OnInit } from '@angular/core';
 import { NbComponentStatus, NbDialogRef, NbGlobalPhysicalPosition, NbToastrService } from '@nebular/theme';
 import { Observable, of, Subject } from 'rxjs';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { map, startWith } from 'rxjs/operators';
 import { IngredientsService } from '../../../ingredients/ingredients.service';
-import _ from 'lodash';
 import { MealsService } from '../../meals.service';
-import { MealInterface } from '../../meal.interface';
-import { DayInterface } from "../../day.interface";
-import { DaysService } from "../../days.service";
+import { DayInterface } from '../../day.interface';
+import { DaysService } from '../../days.service';
 
 export interface MealIngredient {
   ingredient: any;
@@ -74,31 +71,19 @@ export class AddDayComponent implements OnInit {
   }
 
   submit(): void {
-    // const ingredients = this.mealIngredients.map((item: MealIngredient) => {
-    //   return {
-    //     ingredient: {id: item.ingredient.id},
-    //     amount: item.amount,
-    //   };
-    // });
-    //
-    // const data = {
-    //   name: this.formGroup.value.name,
-    //   ingredients: ingredients,
-    // };
-    //
-    // this.mealService.create(data)
-    //   .subscribe(
-    //     (response) => {
-    //       const meal = response.pop();
-    //       this.ref.close();
-    //       this.showToast('info', 'Meal added', `${meal.name} added successfully`);
-    //       this.addDaySubject.next(meal);
-    //     },
-    //     (e) => {
-    //       const body = e.error.message.join ? e.error.message.join(', ') : e.error.message;
-    //       this.showToast('danger', 'Failed to create meal', body);
-    //     },
-    //   );
+    this.dayService.create(this.formGroup.value)
+      .subscribe(
+        (response) => {
+          const day = response.pop();
+          this.ref.close();
+          this.showToast('info', 'Day added', `${day.name} added successfully`);
+          this.addDaySubject.next(day);
+        },
+        (e) => {
+          const body = e.error.message.join ? e.error.message.join(', ') : e.error.message;
+          this.showToast('danger', 'Failed to create meal', body);
+        },
+      );
   }
 
   isControlInvalid(controlName: string): boolean {

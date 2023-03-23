@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators';
 import { NbComponentStatus, NbDialogService, NbGlobalPhysicalPosition, NbToastrService } from '@nebular/theme';
 import { AddMealComponent } from '../forms/add-meal/add-meal.component';
 import { MealInterface } from '../meal.interface';
-import { AddDayComponent } from "../forms/add-day/add-day.component";
+import { AddDayComponent } from '../forms/add-day/add-day.component';
 
 @Component({
   selector: 'ngx-tree-grid',
@@ -20,6 +20,7 @@ export class TreeGridComponent implements OnInit {
 
   public meals: any[];
   public days: any[];
+  public recommendations;
   public addMealSubject: Subject<MealInterface> = new Subject<MealInterface>();
   public addDaySubject: Subject<DayInterface> = new Subject<DayInterface>();
 
@@ -40,6 +41,21 @@ export class TreeGridComponent implements OnInit {
         meal.proteins = this.computeIngredientsPropSum(meal.mealToIngredients || [], 'proteins');
         this.meals.push(meal);
       });
+
+    this.addDaySubject.asObservable()
+      .subscribe((day: any) => {
+        day.calories = this.computeDayIngredientsPropSum(day, 'calories');
+        day.fats = this.computeDayIngredientsPropSum(day, 'fats');
+        day.carbohydrates = this.computeDayIngredientsPropSum(day, 'carbohydrates');
+        day.proteins = this.computeDayIngredientsPropSum(day, 'proteins');
+
+        day.caloriesDiff = day.calories - this.recommendations.calories?.amount;
+        day.fatsDiff = day.fats - this.recommendations.fats?.amount;
+        day.proteinsDiff = day.proteins - this.recommendations.proteins?.amount;
+        day.carbohydratesDiff = day.carbohydrates - this.recommendations.carbohydrates?.amount;
+
+        this.days.push(day);
+    });
 
     this.mealsService.get()
       .subscribe(
@@ -79,6 +95,8 @@ export class TreeGridComponent implements OnInit {
       .pipe(
         map(([days, recommendations]) => {
           recommendations = _.keyBy(recommendations, 'name');
+          this.recommendations = recommendations;
+
           for (const day of days) {
             day.caloriesDiff = day.calories - recommendations.calories?.amount;
             day.fatsDiff = day.fats - recommendations.fats?.amount;

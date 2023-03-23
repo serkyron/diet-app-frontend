@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { HOST } from "../../@core/config/host";
-import { Observable, of, Subject } from "rxjs";
-import { switchMap } from "rxjs/operators";
-import { DayInterface } from "./day.interface";
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { HOST } from '../../@core/config/host';
+import { Observable, of, Subject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { DayInterface } from './day.interface';
 
 @Injectable()
 export class DaysService {
@@ -20,11 +20,11 @@ export class DaysService {
       .pipe(
         switchMap((response: any) => {
           return of(response.data);
-        })
+        }),
       )
       .subscribe(
         (data) => this.days$.next(data),
-        (e) => this.days$.error(e)
+        (e) => this.days$.error(e),
       );
   }
 
@@ -43,22 +43,11 @@ export class DaysService {
   }
 
   public create(data: DayInterface): Observable<any> {
-    this.castProperties(data);
-
     return this.http.put(`${HOST.baseUrl}/day`, data)
       .pipe(
         switchMap((response: any) => {
           return of(response.data);
-        })
+        }),
       );
-  }
-
-  private castProperties(data: DayInterface) {
-    for (let prop in data) {
-      if (['name'].includes(prop)) {
-        continue;
-      }
-      data[prop] = parseFloat(data[prop]);
-    }
   }
 }
