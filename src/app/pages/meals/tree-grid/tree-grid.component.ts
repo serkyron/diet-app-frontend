@@ -70,6 +70,16 @@ export class TreeGridComponent implements OnInit {
         day.fatsDiff = day.fats - this.recommendations.fats?.amount;
         day.proteinsDiff = day.proteins - this.recommendations.proteins?.amount;
         day.carbohydratesDiff = day.carbohydrates - this.recommendations.carbohydrates?.amount;
+
+        const originalDay = _.find(this.days, (item) => item.id === day.id);
+
+        for (const prop in day) {
+          if (!day.hasOwnProperty(prop)) {
+            continue;
+          }
+
+          originalDay[prop] = day[prop];
+        }
       });
 
     this.mealsService.get()
