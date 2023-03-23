@@ -1,7 +1,7 @@
 @import '../../../../@theme/styles/themes';
 @import "~@ng-select/ng-select/themes/material.theme.css";
 
-.add-meal-form {
+.add-day-form {
   @media (min-width: 1250px) {
     width: 800px;
   }
@@ -21,7 +21,7 @@
     display: block;
     color: red;
   }
-  .meal-name-group {
+  .day-name-group {
     position: relative;
     margin-bottom: 2rem;
   }
@@ -48,6 +48,6 @@
   padding-bottom: 0.25em;
 }
 
-.add-meal-card {
+.add-day-card {
   min-height: 80vh;
 }

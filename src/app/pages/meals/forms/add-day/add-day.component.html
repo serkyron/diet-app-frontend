@@ -1,41 +1,59 @@
-<div class="add-meal-form">
-  <nb-card class="add-meal-card">
+<div class="add-day-form">
+  <nb-card class="add-day-card">
     <nb-card-header>{{ title }}</nb-card-header>
     <nb-card-body>
       <form [formGroup]="formGroup">
-        <div class="form-group meal-name-group">
-          <label for="mealName" class="label">Name</label>
-          <input formControlName="name" type="text" nbInput fullWidth id="mealName" placeholder="">
+
+        <div class="form-group day-name-group">
+          <label for="name" class="label">Name</label>
+          <input formControlName="name" type="text" nbInput fullWidth id="name" placeholder="">
           <span *ngIf="isControlInvalid('name')" class="validation-error-text">
-              <span>*</span> Meal name is required
+              <span>*</span> Day name is required
             </span>
         </div>
-        <div class="added-ingredients">
-          <span *ngIf="mealIngredients.length === 0">...</span>
-          <span *ngFor="let mealIngredient of mealIngredients" class="ingredient-label">
-            {{mealIngredient.ingredient.name}} - {{mealIngredient.amount}}g
-            <nb-icon (click)="removeIngredient(mealIngredient.ingredient.id)" class="remove-ingredient" icon="close"></nb-icon>
-          </span>
-        </div>
-        <label class="label">Ingredient</label>
+
+        <label class="label">Breakfast</label>
         <div class="form-group">
-          <ng-select [items]="ingredients"
-                     bindLabel="title"
-                     formControlName="ingredient"
-                     groupBy="category">
-            <ng-template ng-optgroup-tmp let-item="item">
-              {{item.category || 'Unnamed group'}}
-            </ng-template>
+          <ng-select [items]="meals"
+                     bindLabel="name"
+                     formControlName="breakfast">
           </ng-select>
         </div>
+
+        <label class="label">Snack1</label>
         <div class="form-group">
-          <label for="amount" class="label">Amount (g)</label>
-          <input formControlName="amount" type="number" nbInput fullWidth id="amount">
+          <ng-select [items]="meals"
+                     bindLabel="name"
+                     formControlName="snack1">
+          </ng-select>
         </div>
-        <nb-card>
-          <button (click)="addIngredient()" class="btn-info add-ingredient-btn">ADD</button>
-        </nb-card>
-        <button [disabled]="formGroup.invalid || !mealIngredients.length" class="submit-btn" (click)="submit()" type="submit" nbButton status="danger">Submit</button>
+
+        <label class="label">Lunch</label>
+        <div class="form-group">
+          <ng-select [items]="meals"
+                     bindLabel="name"
+                     formControlName="lunch">
+          </ng-select>
+        </div>
+
+        <label class="label">Snack2</label>
+        <div class="form-group">
+          <ng-select [items]="meals"
+                     bindLabel="name"
+                     formControlName="snack2">
+          </ng-select>
+        </div>
+
+        <label class="label">Dinner</label>
+        <div class="form-group">
+          <ng-select [items]="meals"
+                     bindLabel="name"
+                     formControlName="dinner">
+          </ng-select>
+        </div>
+
+        <button [disabled]="formGroup.invalid" class="submit-btn" (click)="submit()" type="submit" nbButton status="danger">Submit</button>
+
       </form>
     </nb-card-body>
   </nb-card>
