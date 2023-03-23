@@ -23,6 +23,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { AddDayComponent } from "./meals/forms/add-day/add-day.component";
+import { EditDayComponent } from "./meals/forms/edit-day/edit-day.component";
 
 @NgModule({
   imports: [
@@ -47,6 +48,7 @@ import { AddDayComponent } from "./meals/forms/add-day/add-day.component";
     PagesComponent,
     AddMealComponent,
     AddDayComponent,
+    EditDayComponent,
   ],
   providers: [
     IngredientsService,

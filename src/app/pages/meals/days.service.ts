@@ -50,4 +50,13 @@ export class DaysService {
         }),
       );
   }
+
+  public update(id: number, data: any): Observable<any> {
+    return this.http.patch(`${HOST.baseUrl}/day/${id}`, data)
+      .pipe(
+        switchMap((response: any) => {
+          return of(response.data);
+        }),
+      );
+  }
 }

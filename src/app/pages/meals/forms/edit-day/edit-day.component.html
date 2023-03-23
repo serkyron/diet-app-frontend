@@ -1,0 +1,60 @@
+<div class="add-day-form">
+  <nb-card class="add-day-card">
+    <nb-card-header>{{ title }}</nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="formGroup">
+
+        <div class="form-group day-name-group">
+          <label for="name" class="label">Name</label>
+          <input formControlName="name" type="text" nbInput fullWidth id="name" placeholder="">
+          <span *ngIf="isControlInvalid('name')" class="validation-error-text">
+              <span>*</span> Day name is required
+            </span>
+        </div>
+
+        <label class="label">Breakfast</label>
+        <div class="form-group">
+          <ng-select [items]="meals"
+                     bindLabel="name"
+                     formControlName="breakfast">
+          </ng-select>
+        </div>
+
+        <label class="label">Snack1</label>
+        <div class="form-group">
+          <ng-select [items]="meals"
+                     bindLabel="name"
+                     formControlName="snack1">
+          </ng-select>
+        </div>
+
+        <label class="label">Lunch</label>
+        <div class="form-group">
+          <ng-select [items]="meals"
+                     bindLabel="name"
+                     formControlName="lunch">
+          </ng-select>
+        </div>
+
+        <label class="label">Snack2</label>
+        <div class="form-group">
+          <ng-select [items]="meals"
+                     bindLabel="name"
+                     formControlName="snack2">
+          </ng-select>
+        </div>
+
+        <label class="label">Dinner</label>
+        <div class="form-group">
+          <ng-select [items]="meals"
+                     bindLabel="name"
+                     formControlName="dinner">
+          </ng-select>
+        </div>
+
+        <button [disabled]="formGroup.invalid" class="submit-btn" (click)="submit()" type="submit" nbButton status="danger">Submit</button>
+
+      </form>
+    </nb-card-body>
+  </nb-card>
+</div>

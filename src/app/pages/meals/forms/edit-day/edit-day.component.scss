@@ -1,0 +1,53 @@
+@import '../../../../@theme/styles/themes';
+@import "~@ng-select/ng-select/themes/material.theme.css";
+
+.add-day-form {
+  @media (min-width: 1250px) {
+    width: 800px;
+  }
+  .submit-btn {
+    position: absolute;
+    bottom: 5%;
+  }
+  .add-ingredient-btn {
+    height: 30px;
+  }
+  .validation-error-text {
+    margin-top: 9px;
+    font-size: 12px;
+    position: absolute;
+    top: 90%;
+    font-weight: 100;
+    display: block;
+    color: red;
+  }
+  .day-name-group {
+    position: relative;
+    margin-bottom: 2rem;
+  }
+}
+
+.added-ingredients {
+  margin-bottom: 15px;
+  min-height: 50px;
+
+  .ingredient-label {
+    padding: 5px;
+    margin: 5px;
+    background: #3a5997;
+    color: #fff;
+    display: inline-flex;
+
+    .remove-ingredient {
+      cursor: pointer;
+    }
+  }
+}
+
+.ng-select {
+  padding-bottom: 0.25em;
+}
+
+.add-day-card {
+  min-height: 80vh;
+}

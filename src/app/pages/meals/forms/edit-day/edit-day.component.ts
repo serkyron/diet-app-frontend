@@ -6,25 +6,24 @@ import { IngredientsService } from '../../../ingredients/ingredients.service';
 import { MealsService } from '../../meals.service';
 import { DayInterface } from '../../day.interface';
 import { DaysService } from '../../days.service';
-
 export interface MealIngredient {
   ingredient: any;
   amount: number;
 }
-
 @Component({
-  selector: 'ngx-add-day-dialog',
-  templateUrl: 'add-day.component.html',
-  styleUrls: ['add-day.component.scss'],
+  selector: 'ngx-edit-day-dialog',
+  templateUrl: 'edit-day.component.html',
+  styleUrls: ['edit-day.component.scss'],
 })
-export class AddDayComponent implements OnInit {
+export class EditDayComponent implements OnInit {
   @Input() title: string;
-  @Input() addDaySubject: Subject<DayInterface>;
+  @Input() editDaySubject: Subject<DayInterface>;
+  @Input() day: DayInterface;
   public meals: any[];
   formGroup: FormGroup;
 
   constructor(
-    protected ref: NbDialogRef<AddDayComponent>,
+    protected ref: NbDialogRef<EditDayComponent>,
     private ingredientService: IngredientsService,
     private mealService: MealsService,
     private dayService: DaysService,
@@ -35,12 +34,12 @@ export class AddDayComponent implements OnInit {
 
   ngOnInit() {
     this.formGroup = this.fb.group({
-      name: [null, [Validators.required]],
-      breakfast: [null],
-      snack1: [null],
-      lunch: [null],
-      snack2: [null],
-      dinner: [null],
+      name: [this.day.name, [Validators.required]],
+      breakfast: [this.day.breakfast],
+      snack1: [this.day.snack1],
+      lunch: [this.day.lunch],
+      snack2: [this.day.snack2],
+      dinner: [this.day.dinner],
     });
 
     this.mealService.get()
@@ -71,17 +70,17 @@ export class AddDayComponent implements OnInit {
   }
 
   submit(): void {
-    this.dayService.create(this.formGroup.value)
+    this.dayService.update(this.day.id, this.formGroup.value)
       .subscribe(
         (response) => {
           const day = response.pop();
           this.ref.close();
-          this.showToast('info', 'Day added', `${day.name} added successfully`);
-          this.addDaySubject.next(day);
+          this.showToast('info', 'Day edited', `${day.name} edited successfully`);
+          this.editDaySubject.next(day);
         },
         (e) => {
           const body = e.error.message.join ? e.error.message.join(', ') : e.error.message;
-          this.showToast('danger', 'Failed to create day', body);
+          this.showToast('danger', 'Failed to edit day', body);
         },
       );
   }

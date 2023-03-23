@@ -10,6 +10,7 @@ import { NbComponentStatus, NbDialogService, NbGlobalPhysicalPosition, NbToastrS
 import { AddMealComponent } from '../forms/add-meal/add-meal.component';
 import { MealInterface } from '../meal.interface';
 import { AddDayComponent } from '../forms/add-day/add-day.component';
+import { EditDayComponent } from '../forms/edit-day/edit-day.component';
 
 @Component({
   selector: 'ngx-tree-grid',
@@ -23,6 +24,7 @@ export class TreeGridComponent implements OnInit {
   public recommendations;
   public addMealSubject: Subject<MealInterface> = new Subject<MealInterface>();
   public addDaySubject: Subject<DayInterface> = new Subject<DayInterface>();
+  public editDaySubject: Subject<DayInterface> = new Subject<DayInterface>();
 
   constructor(
     private mealsService: MealsService,
@@ -56,6 +58,19 @@ export class TreeGridComponent implements OnInit {
 
         this.days.push(day);
     });
+
+    this.editDaySubject.asObservable()
+      .subscribe((day: any) => {
+        day.calories = this.computeDayIngredientsPropSum(day, 'calories');
+        day.fats = this.computeDayIngredientsPropSum(day, 'fats');
+        day.carbohydrates = this.computeDayIngredientsPropSum(day, 'carbohydrates');
+        day.proteins = this.computeDayIngredientsPropSum(day, 'proteins');
+
+        day.caloriesDiff = day.calories - this.recommendations.calories?.amount;
+        day.fatsDiff = day.fats - this.recommendations.fats?.amount;
+        day.proteinsDiff = day.proteins - this.recommendations.proteins?.amount;
+        day.carbohydratesDiff = day.carbohydrates - this.recommendations.carbohydrates?.amount;
+      });
 
     this.mealsService.get()
       .subscribe(
@@ -171,10 +186,11 @@ export class TreeGridComponent implements OnInit {
   }
 
   public editDay(id: number): void {
-    this.dialogService.open(AddDayComponent, {
+    this.dialogService.open(EditDayComponent, {
       context: {
         title: 'EDIT DAY',
-        addDaySubject: this.addDaySubject,
+        editDaySubject: this.editDaySubject,
+        day: _.find(this.days, (item) => item.id === id),
       },
     });
   }
