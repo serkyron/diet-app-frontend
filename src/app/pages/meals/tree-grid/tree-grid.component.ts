@@ -170,6 +170,15 @@ export class TreeGridComponent implements OnInit {
     }
   }
 
+  public editDay(id: number): void {
+    this.dialogService.open(AddDayComponent, {
+      context: {
+        title: 'EDIT DAY',
+        addDaySubject: this.addDaySubject,
+      },
+    });
+  }
+
   private showToast(type: NbComponentStatus, title: string, body: string) {
     const config = {
       status: type,

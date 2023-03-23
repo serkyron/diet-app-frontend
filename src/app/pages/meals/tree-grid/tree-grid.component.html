@@ -132,8 +132,13 @@
         </td>
         <td>
           <button
+            (click)="editDay(day.id)"
+            class="btn-light action-btn">
+            Edit
+          </button>
+          <button
             (click)="deleteDay(day.id)"
-            class="btn-light">
+            class="btn-light action-btn">
             Delete
           </button>
         </td>
