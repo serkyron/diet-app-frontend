@@ -23,7 +23,7 @@
       </thead>
       <tbody>
       <tr *ngFor="let meal of meals">
-        <td>{{meal.name }}</td>
+        <td><strong>{{meal.name }}</strong></td>
         <td>
           <span>{{meal.calories | number: '1.0-0'}}</span>
         </td>
@@ -87,7 +87,7 @@
       </thead>
       <tbody>
       <tr *ngFor="let day of days">
-        <td>{{day.name}}</td>
+        <td><strong>{{day.name}}</strong></td>
         <td>
           <div *ngFor="let mealIngredient of day.breakfast?.mealToIngredients">{{mealIngredient.ingredient.name}} - {{mealIngredient.amount}}g</div>
         </td>
