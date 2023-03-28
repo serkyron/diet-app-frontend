@@ -49,4 +49,13 @@ export class MealsService {
         }),
       );
   }
+
+  public update(id, data: any): Observable<any> {
+    return this.http.put(`${HOST.baseUrl}/meal/${id}`, data)
+      .pipe(
+        switchMap((response: any) => {
+          return of(response.data);
+        }),
+      );
+  }
 }

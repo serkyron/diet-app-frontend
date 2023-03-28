@@ -11,6 +11,7 @@ import { AddMealComponent } from '../forms/add-meal/add-meal.component';
 import { MealInterface } from '../meal.interface';
 import { AddDayComponent } from '../forms/add-day/add-day.component';
 import { EditDayComponent } from '../forms/edit-day/edit-day.component';
+import { EditMealComponent } from "../forms/edit-meal/edit-meal.component";
 
 @Component({
   selector: 'ngx-tree-grid',
@@ -25,6 +26,7 @@ export class TreeGridComponent implements OnInit {
   public addMealSubject: Subject<MealInterface> = new Subject<MealInterface>();
   public addDaySubject: Subject<DayInterface> = new Subject<DayInterface>();
   public editDaySubject: Subject<DayInterface> = new Subject<DayInterface>();
+  public editMealSubject: Subject<MealInterface> = new Subject<MealInterface>();
 
   constructor(
     private mealsService: MealsService,
@@ -35,6 +37,11 @@ export class TreeGridComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.editMealSubject.asObservable()
+      .subscribe((meal) => {
+        this.daysService.refresh();
+      });
+
     this.addMealSubject.asObservable()
       .subscribe((meal: any) => {
         meal.calories = this.computeIngredientsPropSum(meal.mealToIngredients || [], 'calories');
@@ -232,6 +239,16 @@ export class TreeGridComponent implements OnInit {
       context: {
         title: 'NEW DAY',
         addDaySubject: this.addDaySubject,
+      },
+    });
+  }
+
+  public editMeal(id: number): void {
+    this.dialogService.open(EditMealComponent, {
+      context: {
+        title: 'EDIT MEAL',
+        editMealSubject: this.editMealSubject,
+        meal: _.find(this.meals, (item) => item.id === id),
       },
     });
   }

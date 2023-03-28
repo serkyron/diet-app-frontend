@@ -41,8 +41,13 @@
         </td>
         <td>
           <button
+            (click)="editMeal(meal.id)"
+            class="btn-light action-btn">
+            Edit
+          </button>
+          <button
             (click)="deleteMeal(meal.id)"
-            class="btn-light">
+            class="btn-light action-btn">
             Delete
           </button>
         </td>

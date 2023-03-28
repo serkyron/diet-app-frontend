@@ -15,18 +15,19 @@ export interface MealIngredient {
 
 @Component({
   selector: 'ngx-showcase-dialog',
-  templateUrl: 'add-meal.component.html',
-  styleUrls: ['add-meal.component.scss'],
+  templateUrl: 'edit-meal.component.html',
+  styleUrls: ['edit-meal.component.scss'],
 })
-export class AddMealComponent implements OnInit {
+export class EditMealComponent implements OnInit {
   @Input() title: string;
-  @Input() addMealSubject: Subject<MealInterface>;
+  @Input() editMealSubject: Subject<MealInterface>;
+  @Input() meal: MealInterface;
   public ingredients: any[];
   formGroup: FormGroup;
   mealIngredients: MealIngredient[] = [];
 
   constructor(
-    protected ref: NbDialogRef<AddMealComponent>,
+    protected ref: NbDialogRef<EditMealComponent>,
     private ingredientService: IngredientsService,
     private mealService: MealsService,
     private toastrService: NbToastrService,
@@ -35,8 +36,10 @@ export class AddMealComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.mealIngredients = this.meal.mealToIngredients;
+
     this.formGroup = this.fb.group({
-      name: [null, [Validators.required]],
+      name: [this.meal.name, [Validators.required]],
       ingredient: [null],
       amount: [null],
     });
@@ -82,17 +85,17 @@ export class AddMealComponent implements OnInit {
       ingredients: ingredients,
     };
 
-    this.mealService.create(data)
+    this.mealService.update(this.meal.id, data)
       .subscribe(
         (response) => {
           const meal = response.pop();
           this.ref.close();
-          this.showToast('success', 'Meal added', `${meal.name} added successfully`);
-          this.addMealSubject.next(meal);
+          this.showToast('success', 'Meal updated', `${meal.name} updated successfully`);
+          this.editMealSubject.next(meal);
         },
         (e) => {
           const body = e.error.message.join ? e.error.message.join(', ') : e.error.message;
-          this.showToast('danger', 'Failed to create meal', body);
+          this.showToast('danger', 'Failed to update meal', body);
         },
       );
   }

@@ -76,7 +76,7 @@ export class AddDayComponent implements OnInit {
         (response) => {
           const day = response.pop();
           this.ref.close();
-          this.showToast('info', 'Day added', `${day.name} added successfully`);
+          this.showToast('success', 'Day added', `${day.name} added successfully`);
           this.addDaySubject.next(day);
         },
         (e) => {

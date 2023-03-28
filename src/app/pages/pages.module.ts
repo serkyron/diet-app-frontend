@@ -24,6 +24,7 @@ import { CommonModule } from "@angular/common";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { AddDayComponent } from "./meals/forms/add-day/add-day.component";
 import { EditDayComponent } from "./meals/forms/edit-day/edit-day.component";
+import { EditMealComponent } from "./meals/forms/edit-meal/edit-meal.component";
 
 @NgModule({
   imports: [
@@ -49,6 +50,7 @@ import { EditDayComponent } from "./meals/forms/edit-day/edit-day.component";
     AddMealComponent,
     AddDayComponent,
     EditDayComponent,
+    EditMealComponent,
   ],
   providers: [
     IngredientsService,

@@ -75,7 +75,7 @@ export class EditDayComponent implements OnInit {
         (response) => {
           const day = response.pop();
           this.ref.close();
-          this.showToast('info', 'Day edited', `${day.name} edited successfully`);
+          this.showToast('success', 'Day edited', `${day.name} edited successfully`);
           this.editDaySubject.next(day);
         },
         (e) => {
