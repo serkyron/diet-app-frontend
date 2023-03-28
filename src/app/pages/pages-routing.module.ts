@@ -10,7 +10,8 @@ const routes: Routes = [{
   children: [
     {
       path: 'dashboard',
-      component: DashboardComponent,
+      loadChildren: () => import('./meals/tables.module')
+        .then(m => m.TablesModule),
     },
     {
       path: 'ingredients',
