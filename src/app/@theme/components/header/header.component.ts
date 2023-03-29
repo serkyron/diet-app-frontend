@@ -49,6 +49,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    setTimeout(() => {
+      this.sidebarService.compact('menu-sidebar');
+    }, 200);
     this.currentTheme = this.themeService.currentTheme;
 
     this.userService.getUsers()
