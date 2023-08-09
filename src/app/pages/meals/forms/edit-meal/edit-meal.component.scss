@@ -51,3 +51,27 @@
 .add-meal-card {
   min-height: 80vh;
 }
+
+.table {
+  .ingredient-label {
+    padding: 5px;
+    margin: 5px;
+    background: #3a5997;
+    color: #fff;
+    display: inline-flex;
+  }
+
+  .value-deviation {
+    font-size: 0.8em;
+    vertical-align: super;
+    padding: 0 3px;
+  }
+
+  .value-deviation.positive {
+    color: forestgreen;
+  }
+
+  .value-deviation.negative {
+    color: red;
+  }
+}

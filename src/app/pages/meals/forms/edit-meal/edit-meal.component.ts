@@ -107,6 +107,7 @@ export class EditMealComponent implements OnInit {
 
   public removeIngredient(id: number): void {
     _.remove(this.mealIngredients, (item) => item.ingredient.id === id);
+    this.computeTotalElementsSum();
   }
 
   public addIngredient(): void {
@@ -131,5 +132,20 @@ export class EditMealComponent implements OnInit {
 
     this.formGroup.controls.ingredient.setValue(null);
     this.formGroup.controls.amount.setValue(null);
+
+    this.computeTotalElementsSum();
+  }
+
+  private computeIngredientsPropSum(ingredients: any[], prop: string): number {
+    return _.reduce(ingredients, (sum, item) => {
+      return sum + (item.amount * item.ingredient[prop]) / 100;
+    }, 0);
+  }
+
+  private computeTotalElementsSum(): void {
+    this.meal.calories = this.computeIngredientsPropSum(this.meal.mealToIngredients || [], 'calories');
+    this.meal.fats = this.computeIngredientsPropSum(this.meal.mealToIngredients || [], 'fats');
+    this.meal.carbohydrates = this.computeIngredientsPropSum(this.meal.mealToIngredients || [], 'carbohydrates');
+    this.meal.proteins = this.computeIngredientsPropSum(this.meal.mealToIngredients || [], 'proteins');
   }
 }

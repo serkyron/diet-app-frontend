@@ -1,4 +1,4 @@
-<div class="add-meal-form">
+<div class="add-meal-form" xmlns="http://www.w3.org/1999/html">
   <nb-card class="add-meal-card">
     <nb-card-header>{{ title }}</nb-card-header>
     <nb-card-body>
@@ -34,6 +34,43 @@
         </div>
         <nb-card>
           <button (click)="addIngredient()" class="btn-info add-ingredient-btn">ADD</button>
+        </nb-card>
+        <br/>
+        <nb-card>
+          <table class="table">
+            <thead>
+              <th>Calories</th>
+              <th>Fats</th>
+              <th>Carbohydrates</th>
+              <th>Proteins</th>
+            </thead>
+            <tbody>
+              <td>
+                {{ meal.calories }}
+                <span class="value-deviation positive">
+                  +21
+                </span>
+              </td>
+              <td>
+                {{ meal.fats }}
+                <span class="value-deviation negative">
+                  -5
+                </span>
+              </td>
+              <td>
+                {{ meal.carbohydrates }}
+                <span class="value-deviation positive">
+                  +11
+                </span>
+              </td>
+              <td>
+                {{ meal.proteins }}
+                <span class="value-deviation negative">
+                  -6
+                </span>
+              </td>
+            </tbody>
+          </table>
         </nb-card>
         <button [disabled]="formGroup.invalid || !mealIngredients.length" class="submit-btn" (click)="submit()" type="submit" nbButton status="danger">Submit</button>
       </form>
