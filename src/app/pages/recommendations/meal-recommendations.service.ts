@@ -13,7 +13,7 @@ export class MealRecommendationsService {
   }
 
   public get(): Observable<any> {
-    return this.http.get(`${HOST.baseUrl}/recommendation`)
+    return this.http.get(`${HOST.baseUrl}/meal-recommendation`)
       .pipe(
         switchMap((response: any) => {
           return of(response.data);
@@ -22,13 +22,13 @@ export class MealRecommendationsService {
   }
 
   public delete(id: number): Observable<any> {
-    return this.http.delete(`${HOST.baseUrl}/recommendation/${id}`);
+    return this.http.delete(`${HOST.baseUrl}/meal-recommendation/${id}`);
   }
 
   public create(data: RecommendationInterface): Observable<any> {
     this.castProperties(data);
 
-    return this.http.put(`${HOST.baseUrl}/recommendation`, data)
+    return this.http.put(`${HOST.baseUrl}/meal-recommendation`, data)
       .pipe(
         switchMap((response: any) => {
           return of(response.data);
@@ -39,7 +39,7 @@ export class MealRecommendationsService {
   public update(id: number, data: RecommendationInterface): Observable<any> {
     this.castProperties(data);
 
-    return this.http.patch(`${HOST.baseUrl}/recommendation/${id}`, data)
+    return this.http.patch(`${HOST.baseUrl}/meal-recommendation/${id}`, data)
       .pipe(
         switchMap((response: any) => {
           return of(response.data);

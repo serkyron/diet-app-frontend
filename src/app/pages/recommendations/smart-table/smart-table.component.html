@@ -24,9 +24,9 @@
     <ng2-smart-table
       [settings]="settings"
       [source]="sourcePerMeal"
-      (deleteConfirm)="onDeleteConfirm($event)"
-      (createConfirm)="onCreateConfirm($event)"
-      (editConfirm)="onEditConfirm($event)"
+      (deleteConfirm)="onDeleteConfirm($event, true)"
+      (createConfirm)="onCreateConfirm($event, true)"
+      (editConfirm)="onEditConfirm($event, true)"
     >
     </ng2-smart-table>
   </nb-card-body>

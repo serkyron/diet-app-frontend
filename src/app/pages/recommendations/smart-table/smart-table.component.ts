@@ -100,9 +100,11 @@ export class SmartTableComponent {
       );
   }
 
-  onDeleteConfirm(event): void {
+  onDeleteConfirm(event, meal = false): void {
+    let service = meal === true ? this.mealRecommendationService : this.ingredientsService;
+
     if (window.confirm('Are you sure you want to delete?')) {
-      this.ingredientsService.delete(event.data.id)
+      service.delete(event.data.id)
         .subscribe(
           () => {event.confirm.resolve()},
           (e) => {
@@ -115,8 +117,10 @@ export class SmartTableComponent {
     }
   }
 
-  onCreateConfirm(event): void {
-    this.ingredientsService.create(event.newData)
+  onCreateConfirm(event, meal = false): void {
+    let service = meal === true ? this.mealRecommendationService : this.ingredientsService;
+
+    service.create(event.newData)
       .subscribe(
         () => {
           event.confirm.resolve();
@@ -129,8 +133,10 @@ export class SmartTableComponent {
       );
   }
 
-  onEditConfirm(event): void {
-    this.ingredientsService.update(event.newData.id, event.newData)
+  onEditConfirm(event, meal = false): void {
+    let service = meal === true ? this.mealRecommendationService : this.ingredientsService;
+
+    service.update(event.newData.id, event.newData)
       .subscribe(
         () => {event.confirm.resolve()},
         (e) => {
