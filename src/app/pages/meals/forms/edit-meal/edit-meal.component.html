@@ -46,25 +46,25 @@
             </thead>
             <tbody>
               <td>
-                {{ meal.calories }}
+                {{ meal.calories | number: '1.0-2' }}
                 <span class="value-deviation positive">
                   +21
                 </span>
               </td>
               <td>
-                {{ meal.fats }}
+                {{ meal.fats | number: '1.0-2' }}
                 <span class="value-deviation negative">
                   -5
                 </span>
               </td>
               <td>
-                {{ meal.carbohydrates }}
+                {{ meal.carbohydrates | number: '1.0-2' }}
                 <span class="value-deviation positive">
                   +11
                 </span>
               </td>
               <td>
-                {{ meal.proteins }}
+                {{ meal.proteins | number: '1.0-2' }}
                 <span class="value-deviation negative">
                   -6
                 </span>
