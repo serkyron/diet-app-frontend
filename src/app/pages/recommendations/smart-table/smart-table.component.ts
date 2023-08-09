@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { RecommendationsService } from "../recommendations.service";
+import { MealRecommendationsService } from "../meal-recommendations.service";
 import { NbComponentStatus, NbGlobalPhysicalPosition, NbToastrService } from "@nebular/theme";
 import _ from "lodash";
 
@@ -57,9 +58,11 @@ export class SmartTableComponent {
   };
 
   source: LocalDataSource = new LocalDataSource();
+  sourcePerMeal: LocalDataSource = new LocalDataSource();
 
   constructor(
     private ingredientsService: RecommendationsService,
+    private mealRecommendationService: MealRecommendationsService,
     private toastrService: NbToastrService,
   ) {
     this.loadData();
@@ -76,6 +79,21 @@ export class SmartTableComponent {
             this.showToast('danger', 'Failed to load data', e.error.message.join ? e.error.message.join(', ') : e.error.message);
           });
       },
+        (e) => {
+          this.showToast('danger', 'Failed to load data', e.error.message.join ? e.error.message.join(', ') : e.error.message);
+        }
+      );
+
+    this.mealRecommendationService.get()
+      .subscribe(
+        (data) => {
+          data = _.orderBy(data, ['id'], ['desc']);
+
+          this.sourcePerMeal.load(data)
+            .catch((e) => {
+              this.showToast('danger', 'Failed to load data', e.error.message.join ? e.error.message.join(', ') : e.error.message);
+            });
+        },
         (e) => {
           this.showToast('danger', 'Failed to load data', e.error.message.join ? e.error.message.join(', ') : e.error.message);
         }
