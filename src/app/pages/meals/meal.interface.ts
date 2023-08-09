@@ -7,5 +7,9 @@ export interface MealInterface {
   proteins?: number;
   carbohydrates?: number;
   fats?: number;
+  caloriesDiff?: number;
+  proteinsDiff?: number;
+  carbohydratesDiff?: number;
+  fatsDiff?: number;
   mealToIngredients: MealIngredientInterface[];
 }
