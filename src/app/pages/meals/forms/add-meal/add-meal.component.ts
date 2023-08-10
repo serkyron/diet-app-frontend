@@ -26,6 +26,7 @@ export class AddMealComponent implements OnInit {
   formGroup: FormGroup;
   mealIngredients: MealIngredient[] = [];
   mealRecommendations: any;
+  meal: any = {};
 
   constructor(
     protected ref: NbDialogRef<AddMealComponent>,
@@ -49,6 +50,9 @@ export class AddMealComponent implements OnInit {
         (data) => {
           data = _.keyBy(data, 'name');
           this.mealRecommendations = data;
+
+          this.computeTotalElementsSum();
+          this.computeTotalElementsRecommendationsDiff();
         },
         (e) => {
           const body = e.error.message.join ? e.error.message.join(', ') : e.error.message;
@@ -119,6 +123,8 @@ export class AddMealComponent implements OnInit {
 
   public removeIngredient(id: number): void {
     _.remove(this.mealIngredients, (item) => item.ingredient.id === id);
+    this.computeTotalElementsSum();
+    this.computeTotalElementsRecommendationsDiff();
   }
 
   public addIngredient(): void {
@@ -143,6 +149,9 @@ export class AddMealComponent implements OnInit {
 
     this.formGroup.controls.ingredient.setValue(null);
     this.formGroup.controls.amount.setValue(null);
+
+    this.computeTotalElementsSum();
+    this.computeTotalElementsRecommendationsDiff();
   }
 
   private computeIngredientsPropSum(ingredients: any[], prop: string): number {
@@ -151,17 +160,17 @@ export class AddMealComponent implements OnInit {
     }, 0);
   }
 
-  // private computeTotalElementsSum(): void {
-  //   this.meal.calories = this.computeIngredientsPropSum(this.meal.mealToIngredients || [], 'calories');
-  //   this.meal.fats = this.computeIngredientsPropSum(this.meal.mealToIngredients || [], 'fats');
-  //   this.meal.carbohydrates = this.computeIngredientsPropSum(this.meal.mealToIngredients || [], 'carbohydrates');
-  //   this.meal.proteins = this.computeIngredientsPropSum(this.meal.mealToIngredients || [], 'proteins');
-  // }
-  //
-  // private computeTotalElementsRecommendationsDiff(): void {
-  //   this.meal.caloriesDiff = this.meal.calories - this.mealRecommendations.calories?.amount;
-  //   this.meal.fatsDiff = this.meal.fats - this.mealRecommendations.fats?.amount;
-  //   this.meal.proteinsDiff = this.meal.proteins - this.mealRecommendations.proteins?.amount;
-  //   this.meal.carbohydratesDiff = this.meal.carbohydrates - this.mealRecommendations.carbohydrates?.amount;
-  // }
+  private computeTotalElementsSum(): void {
+    this.meal.calories = this.computeIngredientsPropSum(this.mealIngredients || [], 'calories');
+    this.meal.fats = this.computeIngredientsPropSum(this.mealIngredients || [], 'fats');
+    this.meal.carbohydrates = this.computeIngredientsPropSum(this.mealIngredients || [], 'carbohydrates');
+    this.meal.proteins = this.computeIngredientsPropSum(this.mealIngredients || [], 'proteins');
+  }
+
+  private computeTotalElementsRecommendationsDiff(): void {
+    this.meal.caloriesDiff = this.meal.calories - this.mealRecommendations.calories?.amount;
+    this.meal.fatsDiff = this.meal.fats - this.mealRecommendations.fats?.amount;
+    this.meal.proteinsDiff = this.meal.proteins - this.mealRecommendations.proteins?.amount;
+    this.meal.carbohydratesDiff = this.meal.carbohydrates - this.mealRecommendations.carbohydrates?.amount;
+  }
 }

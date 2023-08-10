@@ -35,6 +35,51 @@
         <nb-card>
           <button (click)="addIngredient()" class="btn-info add-ingredient-btn">ADD</button>
         </nb-card>
+        <br/>
+        <nb-card>
+          <table class="table">
+            <thead>
+            <th>Calories</th>
+            <th>Fats</th>
+            <th>Carbohydrates</th>
+            <th>Proteins</th>
+            </thead>
+            <tbody>
+            <td>
+              {{ meal.calories | number: '1.0-2' }}
+              <span class="value-deviation"
+                    [ngClass]="{'positive': meal.caloriesDiff > 0, 'negative': meal.caloriesDiff < 0}"
+                    *ngIf="meal.caloriesDiff != 0">
+                  {{meal.caloriesDiff > 0 ? '+' : ''}}{{meal.caloriesDiff | number: '1.0-2'}}
+                </span>
+            </td>
+            <td>
+              {{ meal.fats | number: '1.0-2' }}
+              <span class="value-deviation"
+                    [ngClass]="{'positive': meal.fatsDiff > 0, 'negative': meal.fatsDiff < 0}"
+                    *ngIf="meal.fatsDiff != 0">
+                  {{meal.fatsDiff > 0 ? '+' : ''}}{{meal.fatsDiff | number: '1.0-2'}}
+                </span>
+            </td>
+            <td>
+              {{ meal.carbohydrates | number: '1.0-2' }}
+              <span class="value-deviation"
+                    [ngClass]="{'positive': meal.carbohydratesDiff > 0, 'negative': meal.carbohydratesDiff < 0}"
+                    *ngIf="meal.carbohydratesDiff != 0">
+                  {{meal.carbohydratesDiff > 0 ? '+' : ''}}{{meal.carbohydratesDiff | number: '1.0-2'}}
+                </span>
+            </td>
+            <td>
+              {{ meal.proteins | number: '1.0-2' }}
+              <span class="value-deviation"
+                    [ngClass]="{'positive': meal.proteinsDiff > 0, 'negative': meal.proteinsDiff < 0}"
+                    *ngIf="meal.carbohydratesDiff != 0">
+                  {{meal.proteinsDiff > 0 ? '+' : ''}}{{meal.proteinsDiff | number: '1.0-2'}}
+                </span>
+            </td>
+            </tbody>
+          </table>
+        </nb-card>
         <button [disabled]="formGroup.invalid || !mealIngredients.length" class="submit-btn" (click)="submit()" type="submit" nbButton status="danger">Submit</button>
       </form>
     </nb-card-body>
