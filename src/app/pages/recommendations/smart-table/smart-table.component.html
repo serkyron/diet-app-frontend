@@ -14,3 +14,20 @@
     </ng2-smart-table>
   </nb-card-body>
 </nb-card>
+
+<nb-card>
+  <nb-card-header>
+    Recommended consumption per meal
+  </nb-card-header>
+
+  <nb-card-body>
+    <ng2-smart-table
+      [settings]="settings"
+      [source]="sourcePerMeal"
+      (deleteConfirm)="onDeleteConfirm($event, true)"
+      (createConfirm)="onCreateConfirm($event, true)"
+      (editConfirm)="onEditConfirm($event, true)"
+    >
+    </ng2-smart-table>
+  </nb-card-body>
+</nb-card>

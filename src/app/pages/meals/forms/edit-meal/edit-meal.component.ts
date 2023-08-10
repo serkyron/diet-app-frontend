@@ -7,6 +7,8 @@ import { IngredientsService } from '../../../ingredients/ingredients.service';
 import _ from 'lodash';
 import { MealsService } from '../../meals.service';
 import { MealInterface } from '../../meal.interface';
+import { RecommendationInterface } from "../../../recommendations/recommendation.interface";
+import { MealRecommendationsService } from "../../../recommendations/meal-recommendations.service";
 
 export interface MealIngredient {
   ingredient: any;
@@ -25,10 +27,12 @@ export class EditMealComponent implements OnInit {
   public ingredients: any[];
   formGroup: FormGroup;
   mealIngredients: MealIngredient[] = [];
+  mealRecommendations: any;
 
   constructor(
     protected ref: NbDialogRef<EditMealComponent>,
     private ingredientService: IngredientsService,
+    private mealRecommendationsService: MealRecommendationsService,
     private mealService: MealsService,
     private toastrService: NbToastrService,
     private fb: FormBuilder,
@@ -36,6 +40,19 @@ export class EditMealComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.mealRecommendationsService.get()
+      .subscribe(
+        (data) => {
+          data = _.keyBy(data, 'name');
+          this.mealRecommendations = data;
+          this.computeTotalElementsRecommendationsDiff();
+        },
+        (e) => {
+          const body = e.error.message.join ? e.error.message.join(', ') : e.error.message;
+          this.showToast('danger', 'Failed to load meal recommendations', body);
+        }
+      );
+
     this.mealIngredients = this.meal.mealToIngredients;
 
     this.formGroup = this.fb.group({
@@ -107,6 +124,8 @@ export class EditMealComponent implements OnInit {
 
   public removeIngredient(id: number): void {
     _.remove(this.mealIngredients, (item) => item.ingredient.id === id);
+    this.computeTotalElementsSum();
+    this.computeTotalElementsRecommendationsDiff();
   }
 
   public addIngredient(): void {
@@ -131,5 +150,28 @@ export class EditMealComponent implements OnInit {
 
     this.formGroup.controls.ingredient.setValue(null);
     this.formGroup.controls.amount.setValue(null);
+
+    this.computeTotalElementsSum();
+    this.computeTotalElementsRecommendationsDiff();
+  }
+
+  private computeIngredientsPropSum(ingredients: any[], prop: string): number {
+    return _.reduce(ingredients, (sum, item) => {
+      return sum + (item.amount * item.ingredient[prop]) / 100;
+    }, 0);
+  }
+
+  private computeTotalElementsSum(): void {
+    this.meal.calories = this.computeIngredientsPropSum(this.meal.mealToIngredients || [], 'calories');
+    this.meal.fats = this.computeIngredientsPropSum(this.meal.mealToIngredients || [], 'fats');
+    this.meal.carbohydrates = this.computeIngredientsPropSum(this.meal.mealToIngredients || [], 'carbohydrates');
+    this.meal.proteins = this.computeIngredientsPropSum(this.meal.mealToIngredients || [], 'proteins');
+  }
+
+  private computeTotalElementsRecommendationsDiff(): void {
+    this.meal.caloriesDiff = this.meal.calories - this.mealRecommendations.calories?.amount;
+    this.meal.fatsDiff = this.meal.fats - this.mealRecommendations.fats?.amount;
+    this.meal.proteinsDiff = this.meal.proteins - this.mealRecommendations.proteins?.amount;
+    this.meal.carbohydratesDiff = this.meal.carbohydrates - this.mealRecommendations.carbohydrates?.amount;
   }
 }

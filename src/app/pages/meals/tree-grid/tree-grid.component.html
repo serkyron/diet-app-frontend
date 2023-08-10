@@ -104,35 +104,35 @@
           <div *ngFor="let mealIngredient of day.dinner?.mealToIngredients">{{mealIngredient.ingredient.name}} - {{mealIngredient.amount}}g</div>
         </td>
         <td>
-          {{day.calories | number: '1.0-0'}}
+          {{day.calories | number: '1.0-2'}}
           <span class="value-deviation"
                 [ngClass]="{'positive': day.caloriesDiff > 0, 'negative': day.caloriesDiff < 0}"
                 *ngIf="day.caloriesDiff != 0">
-            {{day.caloriesDiff > 0 ? '+' : ''}}{{day.caloriesDiff | number: '1.0-0'}}
+            {{day.caloriesDiff > 0 ? '+' : ''}}{{day.caloriesDiff | number: '1.0-2'}}
           </span>
         </td>
         <td>
-          {{day.fats | number: '1.0-0'}}
+          {{day.fats | number: '1.0-2'}}
           <span class="value-deviation"
                 [ngClass]="{'positive': day.fatsDiff > 0, 'negative': day.fatsDiff < 0}"
                 *ngIf="day.fatsDiff != 0">
-            {{day.fatsDiff > 0 ? '+' : ''}}{{day.fatsDiff | number: '1.0-0'}}
+            {{day.fatsDiff > 0 ? '+' : ''}}{{day.fatsDiff | number: '1.0-2'}}
           </span>
         </td>
         <td>
-          {{day.carbohydrates | number: '1.0-0'}}
+          {{day.carbohydrates | number: '1.0-2'}}
           <span class="value-deviation"
                 [ngClass]="{'positive': day.carbohydratesDiff > 0, 'negative': day.carbohydratesDiff < 0}"
                 *ngIf="day.carbohydratesDiff != 0">
-            {{day.carbohydratesDiff > 0 ? '+' : ''}}{{day.carbohydratesDiff | number: '1.0-0'}}
+            {{day.carbohydratesDiff > 0 ? '+' : ''}}{{day.carbohydratesDiff | number: '1.0-2'}}
           </span>
         </td>
         <td>
-          {{day.proteins | number: '1.0-0'}}
+          {{day.proteins | number: '1.0-2'}}
           <span class="value-deviation"
                 [ngClass]="{'positive': day.proteinsDiff > 0, 'negative': day.proteinsDiff < 0}"
                 *ngIf="day.carbohydratesDiff != 0">
-            {{day.proteinsDiff > 0 ? '+' : ''}}{{day.proteinsDiff | number: '1.0-0'}}
+            {{day.proteinsDiff > 0 ? '+' : ''}}{{day.proteinsDiff | number: '1.0-2'}}
           </span>
         </td>
         <td>

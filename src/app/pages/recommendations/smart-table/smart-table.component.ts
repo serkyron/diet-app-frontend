@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { LocalDataSource } from 'ng2-smart-table';
 import { RecommendationsService } from "../recommendations.service";
+import { MealRecommendationsService } from "../meal-recommendations.service";
 import { NbComponentStatus, NbGlobalPhysicalPosition, NbToastrService } from "@nebular/theme";
 import _ from "lodash";
 
@@ -57,9 +58,11 @@ export class SmartTableComponent {
   };
 
   source: LocalDataSource = new LocalDataSource();
+  sourcePerMeal: LocalDataSource = new LocalDataSource();
 
   constructor(
     private ingredientsService: RecommendationsService,
+    private mealRecommendationService: MealRecommendationsService,
     private toastrService: NbToastrService,
   ) {
     this.loadData();
@@ -80,11 +83,28 @@ export class SmartTableComponent {
           this.showToast('danger', 'Failed to load data', e.error.message.join ? e.error.message.join(', ') : e.error.message);
         }
       );
+
+    this.mealRecommendationService.get()
+      .subscribe(
+        (data) => {
+          data = _.orderBy(data, ['id'], ['desc']);
+
+          this.sourcePerMeal.load(data)
+            .catch((e) => {
+              this.showToast('danger', 'Failed to load data', e.error.message.join ? e.error.message.join(', ') : e.error.message);
+            });
+        },
+        (e) => {
+          this.showToast('danger', 'Failed to load data', e.error.message.join ? e.error.message.join(', ') : e.error.message);
+        }
+      );
   }
 
-  onDeleteConfirm(event): void {
+  onDeleteConfirm(event, meal = false): void {
+    let service = meal === true ? this.mealRecommendationService : this.ingredientsService;
+
     if (window.confirm('Are you sure you want to delete?')) {
-      this.ingredientsService.delete(event.data.id)
+      service.delete(event.data.id)
         .subscribe(
           () => {event.confirm.resolve()},
           (e) => {
@@ -97,8 +117,10 @@ export class SmartTableComponent {
     }
   }
 
-  onCreateConfirm(event): void {
-    this.ingredientsService.create(event.newData)
+  onCreateConfirm(event, meal = false): void {
+    let service = meal === true ? this.mealRecommendationService : this.ingredientsService;
+
+    service.create(event.newData)
       .subscribe(
         () => {
           event.confirm.resolve();
@@ -111,8 +133,10 @@ export class SmartTableComponent {
       );
   }
 
-  onEditConfirm(event): void {
-    this.ingredientsService.update(event.newData.id, event.newData)
+  onEditConfirm(event, meal = false): void {
+    let service = meal === true ? this.mealRecommendationService : this.ingredientsService;
+
+    service.update(event.newData.id, event.newData)
       .subscribe(
         () => {event.confirm.resolve()},
         (e) => {

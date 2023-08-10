@@ -28,6 +28,7 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MealsService } from "./pages/meals/meals.service";
 import { DaysService } from "./pages/meals/days.service";
+import { MealRecommendationsService } from "./pages/recommendations/meal-recommendations.service";
 
 @NgModule({
   declarations: [AppComponent],
@@ -59,6 +60,7 @@ import { DaysService } from "./pages/meals/days.service";
     IngredientsService,
     MealsService,
     DaysService,
+    MealRecommendationsService,
   ],
 })
 export class AppModule {

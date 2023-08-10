@@ -25,6 +25,7 @@ import { NgSelectModule } from "@ng-select/ng-select";
 import { AddDayComponent } from "./meals/forms/add-day/add-day.component";
 import { EditDayComponent } from "./meals/forms/edit-day/edit-day.component";
 import { EditMealComponent } from "./meals/forms/edit-meal/edit-meal.component";
+import { MealRecommendationsService } from "./recommendations/meal-recommendations.service";
 
 @NgModule({
   imports: [
@@ -55,6 +56,7 @@ import { EditMealComponent } from "./meals/forms/edit-meal/edit-meal.component";
   providers: [
     IngredientsService,
     RecommendationsService,
+    MealRecommendationsService,
     MealsService,
     DaysService,
   ],
