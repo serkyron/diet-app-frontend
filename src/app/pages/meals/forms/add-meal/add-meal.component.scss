@@ -75,3 +75,14 @@
     color: red;
   }
 }
+
+@media screen and (max-width: 1250px) {
+  .elements-diff-wrapper {
+    overflow-x: scroll;
+    max-width: 280px;
+  }
+
+  .add-meal-form button.submit-btn {
+    position: relative;
+  }
+}

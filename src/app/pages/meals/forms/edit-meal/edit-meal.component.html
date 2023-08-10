@@ -37,14 +37,15 @@
         </nb-card>
         <br/>
         <nb-card>
-          <table class="table">
-            <thead>
+          <div class="elements-diff-wrapper">
+            <table class="table">
+              <thead>
               <th>Calories</th>
               <th>Fats</th>
               <th>Carbohydrates</th>
               <th>Proteins</th>
-            </thead>
-            <tbody>
+              </thead>
+              <tbody>
               <td>
                 {{ meal.calories | number: '1.0-2' }}
                 <span class="value-deviation"
@@ -77,8 +78,9 @@
                   {{meal.proteinsDiff > 0 ? '+' : ''}}{{meal.proteinsDiff | number: '1.0-2'}}
                 </span>
               </td>
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         </nb-card>
         <button [disabled]="formGroup.invalid || !mealIngredients.length" class="submit-btn" (click)="submit()" type="submit" nbButton status="danger">Submit</button>
       </form>
