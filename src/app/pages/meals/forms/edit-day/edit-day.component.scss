@@ -51,3 +51,20 @@
 .add-day-card {
   min-height: 80vh;
 }
+
+.close-popup-btn {
+  float: right;
+  border: 0;
+}
+
+@media screen and (max-width: 1250px) {
+  .add-day-form button.submit-btn {
+    position: relative;
+  }
+}
+
+@media screen and (max-height: 920px) {
+  .add-day-form button.submit-btn {
+    position: relative;
+  }
+}
