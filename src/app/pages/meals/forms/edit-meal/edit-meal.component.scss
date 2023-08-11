@@ -85,6 +85,10 @@
   .add-meal-form button.submit-btn {
     position: relative;
   }
+
+  .added-ingredients {
+    display: grid;
+  }
 }
 
 @media screen and (max-height: 920px) {
