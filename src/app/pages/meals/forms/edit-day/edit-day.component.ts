@@ -89,4 +89,8 @@ export class EditDayComponent implements OnInit {
     const control = this.formGroup.controls[controlName];
     return control.invalid && control.touched;
   }
+
+  public close() {
+    this.ref.close();
+  }
 }

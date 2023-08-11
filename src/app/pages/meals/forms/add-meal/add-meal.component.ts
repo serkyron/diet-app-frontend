@@ -173,4 +173,8 @@ export class AddMealComponent implements OnInit {
     this.meal.proteinsDiff = this.meal.proteins - this.mealRecommendations.proteins?.amount;
     this.meal.carbohydratesDiff = this.meal.carbohydrates - this.mealRecommendations.carbohydrates?.amount;
   }
+
+  public close() {
+    this.ref.close();
+  }
 }

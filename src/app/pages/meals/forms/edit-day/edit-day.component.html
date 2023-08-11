@@ -2,7 +2,7 @@
   <nb-card class="add-day-card">
     <nb-card-header>
       {{ title }}
-      <button aria-disabled="false" tabindex="0"
+      <button (click)="close()" aria-disabled="false" tabindex="0"
               class="close-popup-btn appearance-ghost size-medium shape-rectangle icon-start icon-end status-basic ng-star-inserted nb-transition">
         <nb-icon icon="close-outline" pack="nebular-essentials" >
           <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" width="100%" height="100%" viewBox="0 0 24 24">
