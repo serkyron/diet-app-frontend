@@ -86,3 +86,9 @@
     position: relative;
   }
 }
+
+@media screen and (max-height: 920px) {
+  .add-meal-form button.submit-btn {
+    position: relative;
+  }
+}
